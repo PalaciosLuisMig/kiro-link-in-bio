@@ -22,7 +22,7 @@
 │       │   └── streams/   # Difusión de actualizaciones desde DynamoDB Streams
 │       └── lib/
 │           ├── domain/        # Lógica de dominio pura (sin AWS)
-│           └── repositories/  # Acceso a DynamoDB (único lugar que usa el SDK de AWS)
+│           └── adapters/      # Adaptadores de salida: DynamoDB, SSM y API Gateway (único lugar que usa el SDK de AWS)
 ├── infra/                 # App y stacks de AWS CDK
 │   ├── bin/
 │   └── lib/
@@ -36,7 +36,7 @@
 ## Convenciones
 - Archivos y carpetas en `kebab-case`; tipos y clases en `PascalCase`; variables y funciones en `camelCase`.
 - Los handlers de Lambda son finos: parsean la entrada, llaman a la lógica de `lib/domain/` y devuelven la respuesta.
-- La lógica de dominio no importa el SDK de AWS. Recibe los repositorios de `lib/repositories/` como dependencias inyectadas, de modo que sus tests usan dobles en memoria y no necesitan AWS.
+- La lógica de dominio no importa el SDK de AWS. Define puertos (interfaces) que implementan los adaptadores de `lib/adapters/`, y los recibe como dependencias inyectadas, de modo que sus tests usan dobles en memoria y no necesitan AWS.
 - Los tipos de la API y de los mensajes WebSocket se definen solo en `shared/`. El frontend y el backend los importan; no se duplican.
 - `shared/` solo contiene TypeScript puro y la librería de validación (se elige en la fase de diseño). Sin dependencias de Node, del DOM ni de AWS, porque lo importan tanto el navegador como las Lambdas.
 - Cada `tsconfig.json` de los workspaces extiende `tsconfig.base.json`.

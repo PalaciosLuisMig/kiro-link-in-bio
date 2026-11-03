@@ -2,7 +2,7 @@
 
 ## Overview
 
-Link in Bio es una aplicación serverless en AWS (región `eu-west-1`) con cuatro piezas: un frontend estático (página pública y Panel), una API HTTP, una API WebSocket y una tabla DynamoDB. Este documento explica cómo se cumplen los 17 requisitos de `requirements.md` y respeta el steering (`product.md`, `tech.md`, `structure.md`).
+Link in Bio es una aplicación serverless en AWS (región `us-east-1`) con cuatro piezas: un frontend estático (página pública y Panel), una API HTTP, una API WebSocket y una tabla DynamoDB. Este documento explica cómo se cumplen los 17 requisitos de `requirements.md` y respeta el steering (`product.md`, `tech.md`, `structure.md`).
 
 Es una versión "lite", pensada para una demo de nivel principiante a intermedio: pocas piezas, cada una con una función clara y sin mecanismos que solo hacen falta a gran escala.
 
@@ -418,7 +418,7 @@ Detalles que cumplen requisitos concretos:
 - **Caché de estáticos:** los archivos con hash en `assets/` llevan `max-age` largo e `immutable`. Los HTML llevan `no-cache` para revalidar.
 - **Cabeceras (17.2, 17.4):** las políticas pública y del Panel añaden `Strict-Transport-Security`, `X-Content-Type-Options: nosniff` y `Referrer-Policy: strict-origin-when-cross-origin`. La del Panel añade `X-Robots-Tag: noindex`. La tercera política, solo para `/api/*`, añade `Cache-Control: no-store`.
   - Página pública: `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'`.
-  - Panel: igual, pero con `connect-src 'self' wss://<id de la API WebSocket>.execute-api.eu-west-1.amazonaws.com`.
+  - Panel: igual, pero con `connect-src 'self' wss://<id de la API WebSocket>.execute-api.us-east-1.amazonaws.com`.
 - **Token del propietario:** parámetro SSM `/link-in-bio/owner-token` de tipo `SecureString`. CloudFormation no puede crear `SecureString`, así que se crea una vez con la CLI (`aws ssm put-parameter`), con un valor de al menos 32 caracteres aleatorios. CDK solo lo referencia y concede lectura a `admin-api`.
 - **URL del WebSocket:** `admin-api` la recibe en una variable de entorno y la devuelve junto con el ticket.
 

@@ -13,7 +13,7 @@
 - Tiempo real con API Gateway WebSocket API.
 - Persistencia en Amazon DynamoDB en modo on-demand.
 - Lambdas definidas con `NodejsFunction` de CDK (bundling con esbuild).
-- Región por defecto: `eu-west-1` salvo que se indique otra.
+- Región: `us-east-1` (N. Virginia), elegida por el propietario del proyecto.
 
 ## Persistencia (DynamoDB)
 - Los contadores se incrementan con `UpdateItem` y `ADD` atómico, nunca con lectura + escritura.

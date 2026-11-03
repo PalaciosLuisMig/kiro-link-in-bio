@@ -459,6 +459,18 @@
         "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
         "timestamp": 1793735648455
       }
+    ],
+    "8. Checkpoint del dominio": [
+      {
+        "executionId": "6f835680-a285-49bc-87c6-20484911e1ea",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793736511167
+      },
+      {
+        "executionId": "6f835680-a285-49bc-87c6-20484911e1ea",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793736555641
+      }
     ]
   }
 }

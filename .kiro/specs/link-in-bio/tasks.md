@@ -149,7 +149,7 @@ Definición de "terminada" según el tipo de tarea:
     - Envía a todas las Conexiones con concurrencia fija (por ejemplo 10), elimina las que responden `gone` (410) y continúa ante otros fallos
     - _Requirements: 8.1, 8.2, 12.6, 12.7, 16.5_
 
-- [ ] 8. Checkpoint del dominio
+- [x] 8. Checkpoint del dominio
   - Ejecutar `npm run build`, `npm run lint` y `npm test` y comprobar que pasan. Preguntar al usuario si surgen dudas.
 
 - [ ] 9. Adaptadores de salida (`backend/src/lib/adapters/`)

@@ -212,35 +212,35 @@ Definición de "terminada" según el tipo de tarea:
 - [x] 12. Checkpoint del backend
   - Ejecutar `npm run build`, `npm run lint` y `npm test` y comprobar que pasan. Preguntar al usuario si surgen dudas.
 
-- [ ] 13. Infraestructura con CDK (`infra/`)
-  - [ ] 13.1 App, `cdk.json` y cableado común
-    - `infra/bin/` con la app en `eu-west-1`, un único stack y `cdk.json`
+- [x] 13. Infraestructura con CDK (`infra/`)
+  - [x] 13.1 App, `cdk.json` y cableado común
+    - `infra/bin/` con la app en `us-east-1`, un único stack y `cdk.json`
     - Orden de constructs por dependencias: `Storage`, `Realtime`, `Api` (`admin-api` necesita `wsUrl`), `Frontend` (la CSP necesita el dominio del WebSocket y el origen de la API)
     - Nombres de variables de entorno (tabla, parámetro SSM, `wsUrl`, endpoint de gestión del WebSocket) desde una sola constante compartida por las raíces de composición y por el CDK
     - `LogGroup` explícito por Lambda con retención (por ejemplo 1 semana)
     - Puede empezar justo después de la tarea 1; no depende del checkpoint 12
     - _Requirements: 11.2_
-  - [ ] 13.2 Construct `Storage`
+  - [x] 13.2 Construct `Storage`
     - Tabla `LinkInBioTable` `PAY_PER_REQUEST` con `pk`/`sk`, TTL `ttl`, stream `KEYS_ONLY` y política `DESTROY`
     - _Requirements: 11.6, 11.8_
-  - [ ] 13.3 Construct `Api`
+  - [x] 13.3 Construct `Api`
     - HTTP API con las rutas del diseño y Lambdas `public-api` y `admin-api` (`NodejsFunction`, `nodejs24.x`, ARM64, 512 MB, minificación, `depsLockFilePath` al `package-lock.json` de la raíz)
     - Timeouts explícitos (por ejemplo `public-api` 5 s, `admin-api` 10 s)
     - Throttling por ruta con `CfnStage.routeSettings` (el L2 `HttpStage` solo admite un límite de stage): `POST /api/clicks` 150/300 y `POST /api/visits` 50/100, con las claves de ruta exactas
     - Permisos con `table.grant(...)`; lectura del parámetro SSM solo para `admin-api`
     - _Requirements: 5.3, 12.8, 12.9_
-  - [ ] 13.4 Construct `Realtime`
+  - [x] 13.4 Construct `Realtime`
     - WebSocket API (etapa `prod`) sin registros de acceso ni de ejecución; Lambdas `ws` (5 s) y `notify-panel` (10 s, timeout explícito porque la pausa de 1 s supera el valor por defecto de 3 s)
     - Mapeo de origen con filtro exacto (`eventName` en `INSERT`/`MODIFY` y `dynamodb.Keys.pk.S` en `METRICS`/`EVENTS`), `LATEST`, `retryAttempts: 1`, `maxRecordAge: 60 s`, `ParallelizationFactor: 1`, `batchSize` y `maxBatchingWindow` 0
     - `execute-api:ManageConnections` solo sobre `@connections/*` de la etapa
     - _Requirements: 8.7, 11.2, 11.5, 12.7, 17.1_
-  - [ ] 13.5 Construct `Frontend` y tres políticas de cabeceras
+  - [x] 13.5 Construct `Frontend` y tres políticas de cabeceras
     - Bucket S3 privado con OAC, CloudFront con `REDIRECT_TO_HTTPS`, comportamientos `/api/*`, `/panel.html` y por defecto, sin registros de acceso
     - Política pública y política del Panel (CSP, HSTS, `nosniff`, `Referrer-Policy`, y `X-Robots-Tag: noindex` en el Panel); **tercera política** para `/api/*` que añade `Cache-Control: no-store` (el 429 del throttling y los 404 de ruta los genera API Gateway, no la Lambda, 17.3)
     - Caché larga `immutable` en `assets/` y `no-cache` en los HTML
     - `frontend/dist` debe existir al sintetizar; para los tests, usar un directorio de prueba y el contexto `aws:cdk:bundling-stacks: []` para no empaquetar con esbuild
     - _Requirements: 11.2, 11.4, 17.1, 17.2, 17.3, 17.4_
-  - [ ] 13.6 Tests de infraestructura con `aws-cdk-lib/assertions`
+  - [x] 13.6 Tests de infraestructura con `aws-cdk-lib/assertions`
     - Tabla on-demand con TTL y stream; runtime `nodejs24.x`; timeouts; para las políticas de **los 4 roles de Lambda del proyecto**, ninguna sentencia con acción `*`/`servicio:*` ni recurso `*` (si aparece una excepción como `dynamodb:ListStreams`, listarla con comentario); throttling por ruta sobre `AWS::ApiGatewayV2::Stage`; filtro del mapeo de Streams; registros de acceso desactivados; las tres políticas de cabeceras y el `no-store` en `/api/*`
     - _Requirements: 11.2, 12.8, 17.1, 17.2, 17.3, 17.4_
 

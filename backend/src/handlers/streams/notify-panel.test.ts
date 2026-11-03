@@ -175,7 +175,7 @@ describe('handleNotifyPanel', () => {
 describe('composeNotifyPanel', () => {
   const full = {
     [ENV_VARS.tableName]: 'LinkInBioTable',
-    [ENV_VARS.wsManagementEndpoint]: 'https://abc.execute-api.eu-west-1.amazonaws.com/prod',
+    [ENV_VARS.wsManagementEndpoint]: 'https://abc.execute-api.us-east-1.amazonaws.com/prod',
   };
 
   test.each([ENV_VARS.tableName, ENV_VARS.wsManagementEndpoint])(

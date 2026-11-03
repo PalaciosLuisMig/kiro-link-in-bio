@@ -86,27 +86,27 @@ Definición de "terminada" según el tipo de tarea:
   - La frontera del dominio se vigila con la regla de ESLint de la tarea 1 (no un test)
   - _Requirements: 5.18, 11.2, 11.6, 11.8_
 
-- [ ] 5. Dominio: casos de uso de Enlaces
-  - [ ] 5.1 `listPublicLinks`
+- [x] 5. Dominio: casos de uso de Enlaces
+  - [x] 5.1 `listPublicLinks`
     - Devuelve solo los Enlaces activos, ordenados por posición ascendente, sin repetidos
     - _Requirements: 1.1, 1.3_
-  - [ ] 5.2 Test de propiedad de la lista pública
+  - [x] 5.2 Test de propiedad de la lista pública
     - **Property 5: Lista pública**
     - **Validates: Requirements 1.1, 1.3, 6.11**
-  - [ ] 5.3 `createLink`, `updateLink`, `reorderLinks` y `removeLink`
+  - [x] 5.3 `createLink`, `updateLink`, `reorderLinks` y `removeLink`
     - `position` empieza en 0; `reorderLinks` renumera 0..n-1; `createLink` asigna `max(position) + 1`, o 0 si no hay Enlaces
     - `createLink`: máximo 10 Enlaces (activos e inactivos), título recortado, id nuevo distinto de los existentes y de los eliminados
     - `updateLink`: edita título, URL o estado con condición `attribute_exists(pk)` (no recrear un Enlace fantasma); `NotFound` si no existe; no toca id, posición ni contador
     - `reorderLinks`: exige una permutación exacta de los ids existentes; una `TransactionCanceledException` se traduce a `ValidationError` (6.13), no a 500
     - `removeLink`: primero comprueba que existe (`NotFound` sin tocar contadores), luego borra el Enlace y después su contador `l#<id>`; si el borrado del contador falla, lo registra y termina con éxito
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.8, 6.9, 6.12, 6.13_
-  - [ ] 5.4 Test de propiedad del límite de Enlaces e identificadores únicos
+  - [x] 5.4 Test de propiedad del límite de Enlaces e identificadores únicos
     - **Property 6: Límite de Enlaces e identificadores únicos**
     - **Validates: Requirements 6.1, 6.9**
-  - [ ] 5.5 Test de propiedad de la reordenación
+  - [x] 5.5 Test de propiedad de la reordenación
     - **Property 7: Reordenación**
     - **Validates: Requirements 6.4, 6.13**
-  - [ ] 5.6 Test de propiedad de eliminar un Enlace
+  - [x] 5.6 Test de propiedad de eliminar un Enlace
     - **Property 9: Eliminar un Enlace conserva el histórico**
     - **Validates: Requirements 6.5**
 

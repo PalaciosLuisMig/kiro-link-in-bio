@@ -180,6 +180,155 @@
         "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
         "timestamp": 1793729802091
       }
+    ],
+    "5.1 `listPublicLinks`": [
+      {
+        "executionId": "46c9d136-74e9-44d2-afb8-7748dc8eae2f",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731378812
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731558092
+      }
+    ],
+    "5.3 `createLink`, `updateLink`, `reorderLinks` y `removeLink`": [
+      {
+        "executionId": "46c9d136-74e9-44d2-afb8-7748dc8eae2f",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731379544
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731964966
+      }
+    ],
+    "5.2 Test de propiedad de la lista pública": [
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731966349
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732078118
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732082653
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732270843
+      }
+    ],
+    "5.4 Test de propiedad del límite de Enlaces e identificadores únicos": [
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731967311
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732275835
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732281776
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733792271
+      }
+    ],
+    "5.5 Test de propiedad de la reordenación": [
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731971329
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732276796
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732283197
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733569783
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733573281
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733616909
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733620322
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733661380
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733664856
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733798551
+      }
+    ],
+    "5.6 Test de propiedad de eliminar un Enlace": [
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793731972290
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732277834
+      },
+      {
+        "executionId": "69cb8556-e4f3-4a2c-acc7-3b4d88c7ea5a",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793732284116
+      },
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733795417
+      }
+    ],
+    "5. Dominio: casos de uso de Enlaces": [
+      {
+        "executionId": "329aa915-eb6f-46ce-ab93-caef8c43cbe8",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793733798582
+      }
     ]
   }
 }

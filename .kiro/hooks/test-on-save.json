@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Tests unitarios al guardar TypeScript",
+      "trigger": "PostFileSave",
+      "description": "Ejecuta Vitest en modo no interactivo (vitest --run) cada vez que se guarda un archivo .ts",
+      "matcher": "\\.ts$",
+      "action": {
+        "type": "command",
+        "command": "npm test",
+        "timeout": 120
+      }
+    }
+  ]
+}

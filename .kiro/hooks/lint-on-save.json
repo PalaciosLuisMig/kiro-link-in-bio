@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Lint al guardar TypeScript",
+      "trigger": "PostFileSave",
+      "description": "Ejecuta ESLint en todo el monorepo cada vez que se guarda un archivo .ts",
+      "matcher": "\\.ts$",
+      "action": {
+        "type": "command",
+        "command": "npm run lint",
+        "timeout": 60
+      }
+    }
+  ]
+}

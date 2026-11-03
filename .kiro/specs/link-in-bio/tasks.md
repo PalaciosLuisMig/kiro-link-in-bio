@@ -24,38 +24,38 @@ Definición de "terminada" según el tipo de tarea:
   - Añadir un test trivial por workspace para comprobar que `npm test` los ejecuta todos (se borran cuando llegue el primer test real)
   - _Requirements: ninguno (steering `tech.md` y `structure.md`)_
 
-- [ ] 2. Contratos compartidos (`shared/src/`)
-  - [ ] 2.1 Canales de origen (`channel.ts`)
+- [x] 2. Contratos compartidos (`shared/src/`)
+  - [x] 2.1 Canales de origen (`channel.ts`)
     - `PREDEFINED_CHANNELS`: `qr`, `instagram`, `tiktok`, `x`, `facebook`, `linkedin`, `youtube`, `whatsapp`, `telegram`, `github`
     - `normalizeChannel(value)`: sin valor o cadena vacía devuelve `directo`; en otro caso convierte **solo** las letras A-Z a minúsculas con una función propia (`replace(/[A-Z]/g, ...)`), **nunca** `toLowerCase()` (convertiría el signo Kelvin U+212A en `k`); devuelve el resultado si es un Canal_Predefinido, `directo` u `otro`, y `otro` en cualquier otro caso
     - `compareChannels(a, b)`: Clics descendente y, en empate, nombre ascendente comparado por unidades de código (`<`/`>`), sin `localeCompare` (su resultado depende del idioma del entorno)
     - _Requirements: 4.2, 4.3, 4.4, 4.5, 4.7, 7.4, 8.3_
-  - [ ] 2.2 Tests de los canales
+  - [x] 2.2 Tests de los canales
     - **Property 1: Normalización del canal** (idempotencia y dominio de salida)
     - Casos unitarios de `normalizeChannel`: `Instagram`, `directo`, un canal inventado, un valor de solo espacios (no vacío → `otro`), uno no ASCII, uno de más de 32 caracteres, el signo Kelvin (`lin`+U+212A+`edin` → `otro`) y `İ` (U+0130)
     - Test de propiedad de `compareChannels`: orden total y estable; casos de empate por Clics resuelto por nombre
     - **Validates: Requirements 4.2, 4.3, 4.4, 4.5, 4.7, 7.4, 8.3**
-  - [ ] 2.3 Reglas de los Enlaces (`link-rules.ts`)
+  - [x] 2.3 Reglas de los Enlaces (`link-rules.ts`)
     - `validateTitle(raw)`: aplica `trim()` de JavaScript (quita espacios, saltos de línea finales, NBSP y BOM; un `\n` final se acepta, uno interior se rechaza); acepta si tras `trim` tiene 1 a 80 **puntos de código** (`[...s].length`), sin `\p{Cc}` ni control bidireccional (U+202A–U+202E, U+2066–U+2069); devuelve el valor recortado
     - `validateUrl(raw)`: valida primero la **cadena original** (empieza por `http://` o `https://` sin distinguir mayúsculas, seguido de un carácter distinto de `/`; sin espacios ni `\p{Cc}`; longitud 1 a 2048); después parsea con `new URL` y rechaza si `username` o `password` no están vacíos o si el host está vacío. Guarda la URL tal como llegó (sin `trim`)
     - _Requirements: 6.6, 6.7_
-  - [ ] 2.4 Test de propiedad de la validación de título y URL
+  - [x] 2.4 Test de propiedad de la validación de título y URL
     - **Property 8: Validación de título y URL**
     - Casos unitarios: título de 80 puntos de código con emojis (válido) y de 81 (no), título con `\n` interior y con `\n` final, `https:/ejemplo.com`, `http:///ejemplo.com`, `http://a.com/a b`, `http://user:pass@a.com`, `javascript:alert(1)`, host vacío
     - **Validates: Requirements 6.6, 6.7, 6.8**
-  - [ ] 2.5 Esquemas de la API (`schemas.ts`) y constantes compartidas
+  - [x] 2.5 Esquemas de la API (`schemas.ts`) y constantes compartidas
     - Con Zod: `ClickRequest` (`{ linkId: uuid, channel?: string }`), `VisitRequest` (`{ channel?: string }`) con `channel` de `max(256)` en UTF-16, `CreateLinkRequest`, `UpdateLinkRequest` (al menos un campo), `ReorderRequest` (`{ ids: uuid[] }`), el esquema del parámetro `id` (uuid) y el formato de error
     - `title` y `url` se validan con `refine` que delega en `validateTitle`/`validateUrl`; no usar `.max()`, `.min()`, `.url()` ni `.trim()` de Zod para ellos
     - Modo: `strict` en administración (rechaza campos extra), `strip` en `clicks` y `visits` (los ignora)
     - Tipos de respuesta: `PublicLink`, `AdminLink`, `PublicLinksResponse`, `AdminLinksResponse`, `TicketResponse`, `ResetMetricsResponse`, `ReorderResponse`, con sus tipos inferidos exportados
     - Constantes compartidas de rutas (`/api/clicks`, …) y de códigos de error, para no repetir literales en los tres workspaces
     - _Requirements: 14.1, 14.2, 14.3, 6.8_
-  - [ ] 2.6 Mensajes de tiempo real (`realtime.ts`)
+  - [x] 2.6 Mensajes de tiempo real (`realtime.ts`)
     - `MetricsSnapshot`, `ActivityEvent`, `RealtimeMessage` (`type: 'snapshot'`), la constante `KEEPALIVE` (`{ "type": "keepalive" }`) y `parseKeepalive`
     - `serialize` y `parse`; `parse` devuelve un error descriptivo ante JSON no válido o que no cumple el esquema
     - La medición de los 128 bytes del keepalive **no** va aquí (`shared/` no usa `TextEncoder` ni Node/DOM); se hace en el handler `ws` con `Buffer.byteLength`
     - _Requirements: 14.6, 14.7, 14.10, 8.13_
-  - [ ] 2.7 Test de propiedad de ida y vuelta de los mensajes
+  - [x] 2.7 Test de propiedad de ida y vuelta de los mensajes
     - **Property 14: Ida y vuelta de los mensajes**
     - **Validates: Requirements 14.6, 14.7, 14.8, 14.10**
 

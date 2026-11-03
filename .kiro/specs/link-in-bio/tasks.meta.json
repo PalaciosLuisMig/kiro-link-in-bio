@@ -12,6 +12,107 @@
         "chatSessionId": "sess_eb80a46b-cd18-4c4c-994f-ec78e19f3e59",
         "timestamp": 1793721252795
       }
+    ],
+    "2.1 Canales de origen (`channel.ts`)": [
+      {
+        "executionId": "7bbe1f5e-a513-468b-bfb5-2d000a7f2271",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793722774467
+      },
+      {
+        "executionId": "7bbe1f5e-a513-468b-bfb5-2d000a7f2271",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793722861022
+      }
+    ],
+    "2.3 Reglas de los Enlaces (`link-rules.ts`)": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724465498
+      },
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724686312
+      }
+    ],
+    "2.5 Esquemas de la API (`schemas.ts`) y constantes compartidas": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724466362
+      },
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724687685
+      }
+    ],
+    "2.6 Mensajes de tiempo real (`realtime.ts`)": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724467432
+      },
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724688625
+      },
+      {
+        "executionId": "bdb1bd6c-51d8-4003-8a4a-221860c128d5",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793726995450
+      },
+      {
+        "executionId": "bdb1bd6c-51d8-4003-8a4a-221860c128d5",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793727035838
+      }
+    ],
+    "2.2 Tests de los canales": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724715586
+      },
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793725241915
+      }
+    ],
+    "2.4 Test de propiedad de la validación de título y URL": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724716986
+      },
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793725243282
+      }
+    ],
+    "2.7 Test de propiedad de ida y vuelta de los mensajes": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793724717886
+      },
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793725244081
+      }
+    ],
+    "2. Contratos compartidos (`shared/src/`)": [
+      {
+        "executionId": "e441109b-0f03-47ed-aa36-a76be7f2870b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793725244129
+      }
     ]
   }
 }

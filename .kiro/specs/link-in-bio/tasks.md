@@ -110,22 +110,22 @@ Definición de "terminada" según el tipo de tarea:
     - **Property 9: Eliminar un Enlace conserva el histórico**
     - **Validates: Requirements 6.5**
 
-- [ ] 6. Dominio: casos de uso de Clics, Visitas y Métricas
-  - [ ] 6.1 `registerClick` y `registerVisit`
+- [x] 6. Dominio: casos de uso de Clics, Visitas y Métricas
+  - [x] 6.1 `registerClick` y `registerVisit`
     - `registerClick` lee el Enlace (`NotFound` si no existe o está inactivo), normaliza el canal, hace **una sola** llamada a `Clock.now()` (para el Minuto y el Evento), incrementa con una sola operación y, **solo si el incremento tuvo éxito**, guarda el Evento con el título vigente
     - `registerVisit` hace lo mismo con los contadores de Visitas (sin leer Enlace)
     - Si guardar el Evento falla, se registra con `Logger` y el caso de uso termina con éxito
     - Los casos de uso no reciben IP, User-Agent ni Referer. El TTL del Evento lo calcula el adaptador, no el dominio
     - _Requirements: 2.5, 2.6, 2.7, 3.2, 4.2, 4.3, 4.4, 9.3, 11.1, 11.8_
-  - [ ] 6.2 `getMetrics` y `resetMetrics`
+  - [x] 6.2 `getMetrics` y `resetMetrics`
     - `getMetrics` recibe también `LinkRepository` y filtra `links` por los Enlaces existentes (cubre el contador huérfano de 6.5 y una posible carrera Clic/borrado); construye la `MetricsSnapshot` con `parseMetricsItem` y los últimos 20 eventos con `sk` estrictamente posterior al mayor de: época y ahora−24 h. La `sk` de los eventos usa 13 dígitos rellenados con ceros
     - `resetMetrics` sustituye el elemento de métricas por uno vacío con `epoch = now`. Riesgo anotado: dos reinicios en el mismo milisegundo no producirían una época mayor (16.3); aceptable con un único Propietario humano
     - Precedencia de errores: `ServerMisconfigured` (500) gana a `Unauthorized` (401)
     - _Requirements: 5.18, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 11.2, 11.8, 16.3, 16.7, 16.8_
-  - [ ] 6.3 Test de propiedad del reinicio
+  - [x] 6.3 Test de propiedad del reinicio
     - **Property 4: Reinicio**
     - **Validates: Requirements 16.3, 16.7, 16.8**
-  - [ ] 6.4 Test de propiedad de los datos permitidos (nivel dominio)
+  - [x] 6.4 Test de propiedad de los datos permitidos (nivel dominio)
     - **Property 18 (parte 1): Solo se guardan datos permitidos**
     - Comprobar que lo que `registerClick` y `registerVisit` entregan a los dobles (Evento y atributos de métricas) contiene únicamente los atributos de la lista blanca del diseño. La parte HTTP (cabeceras arbitrarias) se prueba en 10.5
     - **Validates: Requirements 11.1, 11.2**

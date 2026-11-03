@@ -59,20 +59,20 @@ Definición de "terminada" según el tipo de tarea:
     - **Property 14: Ida y vuelta de los mensajes**
     - **Validates: Requirements 14.6, 14.7, 14.8, 14.10**
 
-- [ ] 3. Dominio: funciones puras de métricas (`backend/src/lib/domain/`)
-  - [ ] 3.1 Minutos e incrementos
+- [x] 3. Dominio: funciones puras de métricas (`backend/src/lib/domain/`)
+  - [x] 3.1 Minutos e incrementos
     - `minuteStart(tsMs: number): number` devuelve los segundos Unix del inicio del Minuto UTC; `lastMinutes(nowMs, 60): number[]`
     - `buildClickIncrement(linkId, channel, minuteSec)` y `buildVisitIncrement(channel)` devuelven los nombres de atributo a sumar (`totalClicks`, `l#<id>`, `cc#<canal>`, `m#<minutoSec>`, `totalVisits`, `cv#<canal>`)
     - Convención de la clave de Minuto: segundos Unix en DynamoDB (`m#`) y en el estado del Panel; ISO 8601 solo en la `MetricsSnapshot`. La conversión vive en `parseMetricsItem` (seg → ISO) y en `applySnapshot` (ISO → seg)
     - _Requirements: 2.5, 3.2, 7.3_
-  - [ ] 3.2 Lectura del elemento de métricas
+  - [x] 3.2 Lectura del elemento de métricas
     - `parseMetricsItem(item, nowMs)`: totales, Clics por Enlace, por canal y por Minuto (solo los 60 últimos, emitidos como ISO), época 0 si falta `epoch`, ignorando atributos desconocidos
     - _Requirements: 7.2, 7.3, 7.7, 16.8_
-  - [ ] 3.3 Test de propiedad de conservación de los incrementos
+  - [x] 3.3 Test de propiedad de conservación de los incrementos
     - **Property 2: Conservación de los incrementos** (sobre un elemento en memoria que simula `ADD`, en cualquier orden)
     - Nota: la garantía real la da el `UpdateItem` atómico; se confirma en la tarea 16
     - **Validates: Requirements 2.5, 2.8, 3.2, 3.7, 12.1, 12.2, 12.3, 12.5**
-  - [ ] 3.4 Test de propiedad de la lectura del elemento de métricas
+  - [x] 3.4 Test de propiedad de la lectura del elemento de métricas
     - **Property 3: Lectura del elemento de métricas**
     - **Validates: Requirements 7.2, 7.3, 7.7**
 

@@ -113,6 +113,61 @@
         "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
         "timestamp": 1793725244129
       }
+    ],
+    "3.1 Minutos e incrementos": [
+      {
+        "executionId": "e5784280-6a18-4c1d-a101-1780e0a54d82",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793727558369
+      },
+      {
+        "executionId": "e5784280-6a18-4c1d-a101-1780e0a54d82",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793727663299
+      }
+    ],
+    "3.2 Lectura del elemento de métricas": [
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728119278
+      },
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728275561
+      }
+    ],
+    "3.4 Test de propiedad de la lectura del elemento de métricas": [
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728281584
+      },
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728427658
+      }
+    ],
+    "3.3 Test de propiedad de conservación de los incrementos": [
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728428537
+      },
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728589624
+      }
+    ],
+    "3. Dominio: funciones puras de métricas (`backend/src/lib/domain/`)": [
+      {
+        "executionId": "c6264368-4d1a-4a19-aa9a-cfcee7f9278d",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793728589885
+      }
     ]
   }
 }

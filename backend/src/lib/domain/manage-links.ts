@@ -20,7 +20,7 @@
 // field (Requirement 6.8); a URL that already passed the schema is stored as
 // received (no trim), matching `validateUrl`'s contract.
 
-import { MAX_LINKS, validateTitle } from '@link-in-bio/shared';
+import { ERROR_REASONS, MAX_LINKS, validateTitle } from '@link-in-bio/shared';
 
 import type { Link, StoredLink } from './entities.js';
 import { LimitReached, NotFound, ValidationError } from './errors.js';
@@ -177,7 +177,11 @@ export async function reorderLinks(
   const links = await linkRepository.list();
   const existingIds = links.map((link) => link.id);
   if (!isExactPermutation(existingIds, orderedIds)) {
-    throw new ValidationError('ids are not an exact permutation of the existing links', ['ids']);
+    throw new ValidationError(
+      'ids are not an exact permutation of the existing links',
+      ['ids'],
+      ERROR_REASONS.idsNotPermutation,
+    );
   }
   await linkRepository.reorder(orderedIds);
 }

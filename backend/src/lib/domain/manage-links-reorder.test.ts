@@ -1,6 +1,8 @@
 import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
 
+import { ERROR_REASONS } from '@link-in-bio/shared';
+
 import type { Link, StoredLink } from './entities.js';
 import { ValidationError } from './errors.js';
 import { reorderLinks } from './manage-links.js';
@@ -185,9 +187,15 @@ describe('reorderLinks (Property 7: reorder)', () => {
           const repository = repositoryOf(links);
           const before = await snapshotById(repository);
 
-          await expect(reorderLinks(repository, orderedIds)).rejects.toBeInstanceOf(
-            ValidationError,
+          const error = await reorderLinks(repository, orderedIds).then(
+            () => undefined,
+            (rejection: unknown) => rejection,
           );
+          expect(error).toBeInstanceOf(ValidationError);
+          expect(error).toMatchObject({
+            fields: ['ids'],
+            reason: ERROR_REASONS.idsNotPermutation,
+          });
 
           // Positions (and all other fields) are untouched after the rejection.
           const after = await snapshotById(repository);

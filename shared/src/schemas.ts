@@ -135,18 +135,28 @@ export type IdParam = z.infer<typeof IdParam>;
 
 // --- Error body ------------------------------------------------------------
 
-/**
- * Error response body. `code` is one of the shared `ERROR_CODES`; `fields`
- * lists the invalid field or parameter names on a validation error. No request
- * body, headers, token, or ticket is ever included.
- */
-export const ErrorBody = z
+/** One invalid field: its path and a short static message (never a value). */
+export const ErrorField = z
   .object({
-    code: z.string(),
-    fields: z.array(z.string()).optional(),
+    path: z.string(),
+    message: z.string(),
   })
   .strict();
 
+/**
+ * Error response body. `error` is one of the shared `ERROR_CODES`; `fields`
+ * lists the invalid fields on a validation error; `reason` is one of the shared
+ * `ERROR_REASONS`. No request body, headers, token, or ticket is ever included.
+ */
+export const ErrorBody = z
+  .object({
+    error: z.string(),
+    fields: z.array(ErrorField).optional(),
+    reason: z.string().optional(),
+  })
+  .strict();
+
+export type ErrorField = z.infer<typeof ErrorField>;
 export type ErrorBody = z.infer<typeof ErrorBody>;
 
 // --- Response types --------------------------------------------------------

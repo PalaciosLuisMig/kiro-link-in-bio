@@ -172,26 +172,26 @@ Definición de "terminada" según el tipo de tarea:
     - `Clock` (`now` y `sleep`), `IdGenerator` (UUID), `RandomSource` y el adaptador de `Logger` (único punto con `console`) con las APIs de Node
     - _Requirements: 5.3, 5.18, 11.2, 12.7_
 
-- [ ] 10. Canalización HTTP y handlers de la API
-  - [ ] 10.1 Canalización común (`backend/src/lib/http/`)
-    - Orden: tamaño del cuerpo **decodificado** (según `isBase64Encoded`; más de 10 240 bytes → 400 `payload_too_large`), token (solo administración; parsear `Authorization: Bearer <token>`), JSON y esquema; después traduce los errores de dominio a HTTP
+- [x] 10. Canalización HTTP y handlers de la API
+  - [x] 10.1 Canalización común (`backend/src/lib/http/`)
+    - Orden: tamaño del cuerpo **decodificado** (según `isBase64Encoded`; más de 10 240 bytes → 400 `validation` con `reason: payload_too_large`), token (solo administración; parsear `Authorization: Bearer <token>`), JSON y esquema; después traduce los errores de dominio a HTTP
     - `catch` global que responde `500 server_error` sin detalles ni traza
     - Todas las respuestas llevan `Cache-Control: no-store`; ninguna lleva cabeceras CORS
     - Registros (vía `Logger`) solo con código de error, ruta e id de invocación
     - _Requirements: 5.6, 5.18, 14.1, 14.2, 14.4, 14.5, 17.3_
-  - [ ] 10.2 Test de propiedad de la autorización
+  - [x] 10.2 Test de propiedad de la autorización
     - **Property 17: Autorización** (un anónimo con cuerpo inválido recibe 401, no un error de esquema)
     - **Validates: Requirements 5.3, 5.6**
-  - [ ] 10.3 Handler `public-api` y su raíz de composición
+  - [x] 10.3 Handler `public-api` y su raíz de composición
     - `GET /api/links`, `POST /api/visits` y `POST /api/clicks` (202), con las respuestas de error del diseño
     - La raíz de composición falla rápido y con mensaje claro si falta una variable de entorno
     - _Requirements: 1.3, 2.5, 2.6, 2.7, 3.2, 14.1_
-  - [ ] 10.4 Handler `admin-api` y su raíz de composición
+  - [x] 10.4 Handler `admin-api` y su raíz de composición
     - Rutas de tickets, métricas, reinicio y gestión de Enlaces (`GET`, `POST`, `PATCH`, `DELETE`, `PUT order`)
     - Parámetro `id`: `400 validation` si no es UUID; `404 not_found` si lo es y no existe
     - La respuesta del ticket incluye `wsUrl`, leída de una variable de entorno; la raíz falla rápido si falta
     - _Requirements: 5.2, 5.3, 5.15, 6.1, 6.2, 6.3, 6.4, 6.5, 6.9, 6.12, 6.13, 7.6, 16.3, 16.4_
-  - [ ] 10.5 Tests de los handlers HTTP con dobles en memoria
+  - [x] 10.5 Tests de los handlers HTTP con dobles en memoria
     - Códigos de la tabla de errores del diseño (400, 401, 404, 409, 500)
     - **Property 18 (parte 2):** peticiones con cabeceras arbitrarias (IP, User-Agent, Referer) a `public-api`; ninguna acaba en los dobles ni en los registros
     - Token "canario": ni las respuestas ni los registros contienen el token, el cuerpo ni las cabeceras

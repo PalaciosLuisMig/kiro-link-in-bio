@@ -32,6 +32,8 @@
 // `false`/do nothing, or rethrow the original error unchanged, so an unexpected
 // failure is never swallowed and bubbles up to the pipeline's generic 500.
 
+import { ERROR_REASONS } from '@link-in-bio/shared';
+
 import { NotFound, ValidationError } from '../domain/errors.js';
 
 /** `name` of the DynamoDB conditional-check failure (single `PutItem`/`UpdateItem`/`DeleteItem`). */
@@ -106,7 +108,11 @@ export function mapUpdateLinkError(error: unknown): never {
  */
 export function mapReorderError(error: unknown): never {
   if (errorName(error) === TRANSACTION_CANCELLED) {
-    throw new ValidationError('reorder could not be applied', ['ids']);
+    throw new ValidationError(
+      'reorder could not be applied',
+      ['ids'],
+      ERROR_REASONS.idsNotPermutation,
+    );
   }
   throw error;
 }

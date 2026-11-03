@@ -17,7 +17,7 @@
 // distinct class. The precedence LOGIC lives in the use cases and the pipeline;
 // this module only provides the distinct types they branch on.
 
-import { ERROR_CODES, type ErrorCode } from '@link-in-bio/shared';
+import { ERROR_CODES, type ErrorCode, type ErrorReason } from '@link-in-bio/shared';
 
 /**
  * Base class for every domain error.
@@ -76,7 +76,8 @@ export class LimitReached extends DomainError {
  * such as a reorder whose ids are not an exact permutation of the existing
  * links (Requirement 6.13). `fields` optionally names the offending field(s)
  * so the pipeline can include them in the `fields` array of the error body;
- * it never contains a value, only a field name.
+ * it never contains a value, only a field name. `reason` optionally gives a
+ * stable finer cause (one of `ERROR_REASONS`) that the client can act on.
  */
 export class ValidationError extends DomainError {
   override readonly code = ERROR_CODES.validation;
@@ -84,10 +85,16 @@ export class ValidationError extends DomainError {
   /** Names of the offending fields, if any. Never contains values. */
   readonly fields?: readonly string[];
 
-  constructor(message = 'validation failed', fields?: readonly string[]) {
+  /** A stable finer cause, if the client can act on it. */
+  readonly reason?: ErrorReason;
+
+  constructor(message = 'validation failed', fields?: readonly string[], reason?: ErrorReason) {
     super(message);
     if (fields !== undefined) {
       this.fields = fields;
+    }
+    if (reason !== undefined) {
+      this.reason = reason;
     }
   }
 }

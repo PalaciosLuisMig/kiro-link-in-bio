@@ -11,7 +11,7 @@
 // AWS, no Node, no DOM imports. It mirrors the storage math (`ttl = ts/1000 +
 // 86400`) without any AWS SDK, exactly as the design prescribes.
 
-import type { MetricsSnapshot } from '@link-in-bio/shared';
+import { ERROR_REASONS, type MetricsSnapshot } from '@link-in-bio/shared';
 
 import type {
   Channel,
@@ -260,7 +260,11 @@ export class InMemoryLinkRepository implements LinkRepository {
     const existing = [...this.links.keys()];
     if (!isExactPermutation(existing, orderedIds)) {
       // Mirrors a cancelled TransactWriteItems -> ValidationError (6.13).
-      throw new ValidationError('ids are not an exact permutation', ['ids']);
+      throw new ValidationError(
+        'ids are not an exact permutation',
+        ['ids'],
+        ERROR_REASONS.idsNotPermutation,
+      );
     }
     orderedIds.forEach((id, index) => {
       const stored = this.links.get(id)!;

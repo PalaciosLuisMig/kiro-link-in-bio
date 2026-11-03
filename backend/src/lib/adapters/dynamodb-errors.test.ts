@@ -1,5 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
+import { ERROR_REASONS } from '@link-in-bio/shared';
+
 import { NotFound, ValidationError } from '../domain/errors.js';
 import {
   isConditionalCheckFailed,
@@ -85,6 +87,7 @@ describe('mapReorderError (reorder path)', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(ValidationError);
       expect((error as ValidationError).fields).toEqual(['ids']);
+      expect((error as ValidationError).reason).toBe(ERROR_REASONS.idsNotPermutation);
     }
   });
 

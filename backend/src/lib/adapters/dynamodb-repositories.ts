@@ -37,6 +37,8 @@ import type {
   StoredEvent,
   StoredLink,
 } from '../domain/entities.js';
+import { ERROR_REASONS } from '@link-in-bio/shared';
+
 import { ValidationError } from '../domain/errors.js';
 import type {
   EventRepository,
@@ -234,7 +236,11 @@ export class DynamoDbLinkRepository implements LinkRepository {
     // 9.2 mapping turns into a `ValidationError` too).
     const existingIds = (await this.list()).map((link) => link.id);
     if (!isExactPermutation(existingIds, orderedIds)) {
-      throw new ValidationError('ids are not an exact permutation of the existing links', ['ids']);
+      throw new ValidationError(
+        'ids are not an exact permutation of the existing links',
+        ['ids'],
+        ERROR_REASONS.idsNotPermutation,
+      );
     }
     try {
       await this.client.send(

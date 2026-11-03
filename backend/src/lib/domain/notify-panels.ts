@@ -59,20 +59,23 @@ export interface NotifyPanelsDeps {
  * failure is logged and skipped, and the remaining connections still receive
  * the snapshot.
  *
+ * @returns `false` when there were no connections (nothing was read or sent, so
+ *   the caller has no reason to wait), `true` when a snapshot was sent.
  * @throws whatever `getMetrics` throws, so the Lambda retries once.
  */
-export async function notifyPanels(deps: NotifyPanelsDeps): Promise<void> {
+export async function notifyPanels(deps: NotifyPanelsDeps): Promise<boolean> {
   const now = deps.metrics.clock.now();
   const connections = await deps.realtime.listConnections(now);
   if (connections.length === 0) {
     // No Panels listening: do not read metrics and do not wait.
-    return;
+    return false;
   }
 
   // A `getMetrics` failure propagates so the Lambda retries once (16.5).
   const snapshot = await getMetrics(deps.metrics);
 
   await sendToAll(deps, connections, snapshot);
+  return true;
 }
 
 /**

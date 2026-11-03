@@ -86,3 +86,16 @@ export const ENV_VARS = {
   /** `https://` management endpoint of the WebSocket stage (PostToConnection). */
   wsManagementEndpoint: 'WS_MANAGEMENT_ENDPOINT',
 } as const;
+
+/**
+ * WebSocket route selection expression. A message is routed by its `action`
+ * property; the Panel's `{ "type": "keepalive" }` has none, so it lands on the
+ * `$default` route, which is the only message route the `ws` Lambda serves.
+ */
+export const ROUTE_SELECTION_EXPRESSION = '$request.body.action';
+
+/** Name of the query-string parameter that carries the connection ticket. */
+export const WS_TICKET_PARAM = 'ticket';
+
+/** Largest WebSocket message, in bytes, the server accepts as a keepalive. */
+export const MAX_KEEPALIVE_BYTES = 128;

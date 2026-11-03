@@ -197,15 +197,15 @@ Definición de "terminada" según el tipo de tarea:
     - Token "canario": ni las respuestas ni los registros contienen el token, el cuerpo ni las cabeceras
     - _Requirements: 2.6, 5.3, 5.18, 6.9, 6.12, 11.1, 11.2, 14.2_
 
-- [ ] 11. Handlers de WebSocket y de Streams
-  - [ ] 11.1 Handler `ws`
+- [x] 11. Handlers de WebSocket y de Streams
+  - [x] 11.1 Handler `ws`
     - `$connect` lee `ticket` de la consulta y responde 200 o 401; `$disconnect` elimina la Conexión; `$default` descarta todo lo que no sea `keepalive` o supere 128 bytes (medidos con `Buffer.byteLength`) y devuelve siempre 200
     - Comprobar que `routeSelectionExpression` deja `{"type":"keepalive"}` en `$default`
     - _Requirements: 5.7, 5.16, 8.14, 11.5, 11.7_
-  - [ ] 11.2 Handler `notify-panel`
+  - [x] 11.2 Handler `notify-panel`
     - Ignora el contenido de los registros del stream, llama a `notifyPanels` y espera con `Clock.sleep` hasta completar 1 s desde el inicio de la invocación
     - _Requirements: 8.1, 8.2, 8.7, 12.6, 12.7, 16.5_
-  - [ ] 11.3 Tests de los handlers `ws` y `notify-panel`
+  - [x] 11.3 Tests de los handlers `ws` y `notify-panel`
     - Ticket ausente, caducado y usado; mensajes no válidos y de más de 128 bytes; pausa mínima de 1 s con `FakeClock`
     - _Requirements: 5.7, 8.7, 8.14_
 

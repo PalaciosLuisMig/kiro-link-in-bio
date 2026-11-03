@@ -105,7 +105,7 @@ describe('notifyPanels', () => {
   test('no connections: reads no metrics and sends nothing', async () => {
     const { deps, notifier, metricsCounter } = makeDeps();
 
-    await expect(notifyPanels(deps)).resolves.toBeUndefined();
+    await expect(notifyPanels(deps)).resolves.toBe(false);
 
     expect(metricsCounter.reads).toBe(0);
     expect(notifier.sent).toHaveLength(0);

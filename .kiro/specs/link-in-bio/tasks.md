@@ -209,7 +209,7 @@ Definición de "terminada" según el tipo de tarea:
     - Ticket ausente, caducado y usado; mensajes no válidos y de más de 128 bytes; pausa mínima de 1 s con `FakeClock`
     - _Requirements: 5.7, 8.7, 8.14_
 
-- [ ] 12. Checkpoint del backend
+- [x] 12. Checkpoint del backend
   - Ejecutar `npm run build`, `npm run lint` y `npm test` y comprobar que pasan. Preguntar al usuario si surgen dudas.
 
 - [ ] 13. Infraestructura con CDK (`infra/`)

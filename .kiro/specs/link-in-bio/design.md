@@ -219,18 +219,22 @@ La instantánea no lleva títulos de Enlaces. El Panel los obtiene de `GET /api/
 | `RealtimeAccessRepository` | `storeTicket(hash, expiresAt)`, `consumeTicket(hash, now)`, `addConnection(conn)`, `removeConnection(id)`, `listConnections(now)` | DynamoDB |
 | `OwnerTokenProvider` | `getToken()` | SSM Parameter Store |
 | `RealtimeNotifier` | `send(connectionId, payload)` devuelve `sent` o `gone` | API Gateway Management API |
-| `Clock`, `IdGenerator`, `RandomSource` | Hora actual, UUID y bytes aleatorios | Implementaciones de Node |
+| `Clock` | `now()` y `sleep(ms)` | Implementación de Node (`sleep` lo usa `notify-panel` para la pausa de 1 s) |
+| `IdGenerator`, `RandomSource` | UUID y bytes aleatorios | Implementaciones de Node |
+| `Logger` | `info(fields)` y `error(fields)`, con solo campos permitidos (código, ruta, id de invocación) | Implementación de Node (único punto con `console`) |
+
+El puerto `Logger` recibe un objeto tipado que admite únicamente los campos permitidos, de modo que el tipo impide registrar un cuerpo, cabeceras, el token o el ticket (5.18, 11.2). Todo "lo registra" de la tabla de casos de uso pasa por este puerto.
 
 #### Casos de uso
 
 | Caso de uso | Puertos | Comportamiento | Requisitos |
 |---|---|---|---|
 | `listPublicLinks` | `LinkRepository` | Enlaces activos ordenados por posición | 1.1, 1.3 |
-| `registerClick` | `LinkRepository`, `MetricsRepository`, `EventRepository`, `Clock`, `IdGenerator` | Lee el Enlace (si no existe o está inactivo lanza `NotFound`), normaliza el canal e incrementa los contadores con una sola operación. Después guarda el Evento con el título vigente. Si guardar el Evento falla, lo registra y responde con éxito igualmente | 2.5 a 2.7, 4.2 a 4.5, 9.3 |
-| `registerVisit` | `MetricsRepository`, `EventRepository`, `Clock`, `IdGenerator` | Igual que el Clic, con los contadores de Visitas | 3.2, 4.2 a 4.5 |
+| `registerClick` | `LinkRepository`, `MetricsRepository`, `EventRepository`, `Clock`, `IdGenerator`, `Logger` | Lee el Enlace (si no existe o está inactivo lanza `NotFound`), normaliza el canal e incrementa los contadores con una sola operación. Después guarda el Evento con el título vigente. Si guardar el Evento falla, lo registra y responde con éxito igualmente | 2.5 a 2.7, 4.2 a 4.5, 9.3 |
+| `registerVisit` | `MetricsRepository`, `EventRepository`, `Clock`, `IdGenerator`, `Logger` | Igual que el Clic, con los contadores de Visitas | 3.2, 4.2 a 4.5 |
 | `createLink`, `updateLink`, `reorderLinks` | `LinkRepository` | Aplican las reglas de 6. `createLink` cuenta los Enlaces existentes (máximo 10) y asigna la posición siguiente a la mayor existente. `reorderLinks` exige una permutación exacta de los identificadores existentes | 6.1 a 6.13 |
-| `removeLink` | `LinkRepository`, `MetricsRepository` | Elimina el Enlace y su contador `l#<id>`. El total, los Minutos y los canales no cambian. Si borrar el contador falla, lo registra: el Enlace ya no existe y `getMetrics` solo muestra los existentes | 6.5 |
-| `getMetrics` | `MetricsRepository`, `EventRepository`, `Clock` | Lee el elemento de métricas, los últimos 20 eventos de la época en curso y construye la `MetricsSnapshot` con `parseMetricsItem`. Lo usan la API y el notificador | 7.1 a 7.7, 8.8 |
+| `removeLink` | `LinkRepository`, `MetricsRepository`, `Logger` | Comprueba primero que el Enlace existe (`NotFound` sin tocar contadores), luego elimina el Enlace y después su contador `l#<id>`. El total, los Minutos y los canales no cambian. Si borrar el contador falla, lo registra: el Enlace ya no existe y `getMetrics` solo muestra los existentes | 6.5 |
+| `getMetrics` | `LinkRepository`, `MetricsRepository`, `EventRepository`, `Clock` | Lee el elemento de métricas, los últimos 20 eventos de la época en curso y construye la `MetricsSnapshot` con `parseMetricsItem`. Filtra los Clics por Enlace por los Enlaces existentes, de modo que un contador huérfano (por un borrado con fallo al borrar el contador, o por una carrera entre el `GetItem` y el `UpdateItem` de un Clic) no aparezca (6.5, propiedad 9). Lo usan la API y el notificador | 6.5, 7.1 a 7.7, 8.8 |
 | `resetMetrics` | `MetricsRepository`, `Clock` | Sustituye el elemento de métricas por uno vacío con la época nueva | 16.3, 16.7, 16.8 |
 | `issueTicket` | `RealtimeAccessRepository`, `RandomSource`, `Clock` | Genera 32 bytes aleatorios, guarda solo el hash SHA-256 y devuelve el ticket con su caducidad (60 s) | 5.15, 5.17 |
 | `openConnection` | `RealtimeAccessRepository`, `Clock` | Consume el ticket de forma atómica. Si es válido, guarda la Conexión con caducidad de 24 h | 5.7, 5.16, 11.5, 11.6 |
@@ -302,12 +306,12 @@ El mapeo de origen de eventos usa la vista `KEYS_ONLY` del stream y un filtro qu
 
 Algoritmo de `notifyPanels`:
 
-1. Construye la instantánea con `getMetrics`. El contenido de los registros del stream no se usa: solo sirven de aviso.
-2. Lista las Conexiones no caducadas.
-3. Envía el mensaje `snapshot` a todas con concurrencia limitada.
+1. Lista las Conexiones no caducadas. Si no hay ninguna, termina sin leer métricas ni esperar.
+2. Construye la instantánea con `getMetrics`. El contenido de los registros del stream no se usa: solo sirven de aviso. Si `getMetrics` falla, lanza y deja que la Lambda reintente una vez.
+3. Envía el mensaje `snapshot` a todas con concurrencia limitada (fija, por ejemplo 10).
    - Si el envío falla con `gone` (410), elimina la Conexión (12.7).
    - Si falla por otro motivo, lo registra y continúa con el resto (12.6).
-4. Espera hasta que hayan pasado 1 s desde el inicio de la invocación y termina.
+4. Espera con `Clock.sleep` hasta que hayan pasado 1 s desde el inicio de la invocación y termina.
 
 Un shard se procesa de forma secuencial (`ParallelizationFactor` 1). Por eso la pausa final garantiza al menos 1 s entre dos envíos (8.7), y mientras tanto el stream va acumulando los avisos, que la siguiente invocación resuelve con una sola instantánea. Esta garantía asume un único shard, que es lo habitual con este tráfico (riesgo R2).
 
@@ -397,20 +401,22 @@ Un único stack con cuatro constructs.
 | Construct | Recursos |
 |---|---|
 | `Storage` | Tabla DynamoDB `PAY_PER_REQUEST`, atributo TTL `ttl`, stream `KEYS_ONLY`, política de eliminación `DESTROY` para la demo |
-| `Api` | HTTP API con las rutas anteriores y throttling por ruta. Lambdas `public-api` y `admin-api` |
+| `Api` | HTTP API con las rutas anteriores y throttling por ruta (vía `CfnStage.routeSettings`, ver abajo). Lambdas `public-api` y `admin-api` |
 | `Realtime` | WebSocket API (etapa `prod`) con registro de acceso y de ejecución desactivados. Lambdas `ws` y `notify-panel` con su mapeo de origen filtrado |
-| `Frontend` | Bucket S3 privado, distribución CloudFront con OAC, despliegue de `frontend/dist` y dos políticas de cabeceras |
+| `Frontend` | Bucket S3 privado, distribución CloudFront con OAC, despliegue de `frontend/dist` y tres políticas de cabeceras (pública, Panel y `/api/*`) |
 
 Detalles que cumplen requisitos concretos:
 
-- **Lambdas:** `NodejsFunction`, runtime `nodejs24.x`, ARM64, 512 MB, esbuild con minificación. Los registros se limitan a eventos con campos permitidos: nunca el cuerpo, las cabeceras ni el token (5.18, 11.2).
+- **Lambdas:** `NodejsFunction`, runtime `nodejs24.x`, ARM64, 512 MB, esbuild con minificación y `depsLockFilePath` apuntando al `package-lock.json` de la raíz del monorepo. Cada función fija un timeout explícito (el valor por defecto de CDK es 3 s): `public-api` 5 s, `admin-api` 10 s, `ws` 5 s y `notify-panel` 10 s, porque este último hace una pausa de 1 s además de leer y enviar. Cada función tiene un `LogGroup` explícito con retención (por ejemplo 1 semana). Los registros se limitan a eventos con campos permitidos a través del puerto `Logger`: nunca el cuerpo, las cabeceras ni el token (5.18, 11.2).
+- **Throttling por ruta:** el L2 `HttpStage` solo admite un límite para todo el stage, así que los límites por ruta se configuran con `CfnStage.routeSettings`, con las claves de ruta exactas: `POST /api/clicks` a 150 req/s (ráfaga 300) y `POST /api/visits` a 50 req/s (ráfaga 100) (D9, 12.8).
+- **`Cache-Control: no-store` en toda respuesta de `/api/*`:** además de la cabecera que añade cada Lambda, una política de cabeceras de CloudFront para `/api/*` añade `Cache-Control: no-store`, de modo que también la lleven las respuestas que genera API Gateway sin pasar por la Lambda (el 429 del throttling y un 404 de ruta inexistente) (17.3).
 - **CloudFront:** `viewerProtocolPolicy: REDIRECT_TO_HTTPS` (17.1). Los registros de acceso están desactivados para no guardar IPs (11.2).
 - **Comportamientos de CloudFront:**
   - `/api/*`: origen HTTP API, `CACHING_DISABLED`, `ALL_VIEWER_EXCEPT_HOST_HEADER` y todos los métodos.
   - `/panel.html`: origen S3 y política de cabeceras del Panel.
   - Resto: origen S3 y política de cabeceras pública.
 - **Caché de estáticos:** los archivos con hash en `assets/` llevan `max-age` largo e `immutable`. Los HTML llevan `no-cache` para revalidar.
-- **Cabeceras (17.2, 17.4):** ambas políticas añaden `Strict-Transport-Security`, `X-Content-Type-Options: nosniff` y `Referrer-Policy: strict-origin-when-cross-origin`. La del Panel añade `X-Robots-Tag: noindex`.
+- **Cabeceras (17.2, 17.4):** las políticas pública y del Panel añaden `Strict-Transport-Security`, `X-Content-Type-Options: nosniff` y `Referrer-Policy: strict-origin-when-cross-origin`. La del Panel añade `X-Robots-Tag: noindex`. La tercera política, solo para `/api/*`, añade `Cache-Control: no-store`.
   - Página pública: `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'`.
   - Panel: igual, pero con `connect-src 'self' wss://<id de la API WebSocket>.execute-api.eu-west-1.amazonaws.com`.
 - **Token del propietario:** parámetro SSM `/link-in-bio/owner-token` de tipo `SecureString`. CloudFormation no puede crear `SecureString`, así que se crea una vez con la CLI (`aws ssm put-parameter`), con un valor de al menos 32 caracteres aleatorios. CDK solo lo referencia y concede lectura a `admin-api`.
@@ -418,7 +424,7 @@ Detalles que cumplen requisitos concretos:
 
 #### Permisos IAM (mínimo privilegio)
 
-Se conceden con `table.grant(fn, ...acciones)` y con los `grant*` de CDK, nunca con `*`.
+Se conceden con `table.grant(fn, ...acciones)` y con los `grant*` de CDK, nunca con `*`. El test de infraestructura acota esta regla a las políticas de los cuatro roles de Lambda del proyecto: los roles que CDK crea para recursos auxiliares (por ejemplo `BucketDeployment`, que usa `s3:GetObject*` y `cloudfront:CreateInvalidation` sobre `*`) quedan fuera. Si un `grant*` produce un comodín esperado (por ejemplo `dynamodb:ListStreams` sobre el ARN del stream), se lista como excepción documentada en el test.
 
 | Lambda | Acciones de DynamoDB | Otros permisos |
 |---|---|---|
@@ -650,9 +656,9 @@ Se aplica la pirámide de tests del steering. Todo se ejecuta con `vitest --run`
 | Canalización HTTP | Orden tamaño, token y esquema. Un anónimo con un cuerpo inválido recibe 401 | Vitest |
 | Adaptadores | Las expresiones de DynamoDB (`ADD`, condición del ticket, `PutItem` condicional) se construyen con funciones puras que sí se prueban. El acceso real se comprueba en el despliegue | Vitest y prueba de humo |
 | Frontend | El reductor del Panel y la lectura de `src` son funciones puras. El renderizado con `textContent` (un título `<script>` se muestra como texto) se prueba con `happy-dom` si se instala | Vitest |
-| Infraestructura | Tabla `PAY_PER_REQUEST` con TTL y stream, runtime `nodejs24.x`, ausencia de `*` en las acciones de IAM, políticas de cabeceras, throttling por ruta, registros de acceso desactivados y filtro del mapeo de Streams | Aserciones de `aws-cdk-lib/assertions` |
+| Infraestructura | Tabla `PAY_PER_REQUEST` con TTL y stream, runtime `nodejs24.x`, timeouts de las Lambdas, ausencia de `*` en las acciones de IAM de los cuatro roles del proyecto, las tres políticas de cabeceras (incluido `no-store` en `/api/*`), throttling por ruta, registros de acceso desactivados y filtro del mapeo de Streams | Aserciones de `aws-cdk-lib/assertions` |
 | Despliegue | Humo manual tras `cdk deploy`: abrir la página con `?src=qr`, pulsar un Enlace y ver subir el contador, la gráfica y el feed | Manual |
-| Carga | Script Node que lanza 500 Clics en 10 s, comprueba la suma de contadores y el p95 de la respuesta (12.1 a 12.5), y con un cliente WebSocket abierto mide el tiempo desde cada 202 hasta el mensaje: p95 inferior a 3 s (8.1, 8.2, D14) | Script en `scripts/` |
+| Carga | Script Node que lanza 500 Clics en 10 s, comprueba la suma de contadores y el p95 de la respuesta (12.1 a 12.5), y con un cliente WebSocket abierto mide el tiempo desde cada 202 hasta el mensaje: p95 inferior a 3 s (8.1, 8.2, D14). A los 4 s del último 202, comprueba que el último mensaje coincide con `GET /api/admin/metrics` (8.8) | Script en `infra/scripts/` (la carpeta `scripts/` de la raíz no figura en `structure.md`) |
 
 Los tests de propiedades usan generadores propios para Enlaces, eventos con marcas de tiempo y épocas arbitrarias, y elementos de métricas. Cuando una propiedad falla, `fast-check` reduce el contraejemplo y la semilla se imprime para reproducirlo.
 

@@ -66,7 +66,7 @@ El primer borrador del diseño usaba un procesador de Streams que contaba los cl
 | Reiniciar métricas | Época en la clave de cada contador | Reemplazar el elemento `METRICS/CURRENT` con una época nueva |
 | Tipos de elemento en DynamoDB | 12 | 5 |
 | Lambdas | 6 | 4 |
-| Puertos del dominio | 12 | 6, más `Clock`, `IdGenerator` y `RandomSource` |
+| Puertos del dominio | 12 | 6, más `Clock`, `IdGenerator`, `RandomSource` y `Logger` |
 | Propiedades de corrección | 23 | 18 |
 | Dependencias nuevas | `zod`, `fast-check`, `aws-sdk-client-mock`, `happy-dom` | `zod` y `fast-check` |
 | Canales personalizados | Incluidos | Fuera de esta versión, para la demo en vivo |
@@ -154,7 +154,7 @@ Arquitectura hexagonal: las dependencias apuntan hacia el dominio, que no import
 | Frontend | `frontend/src/` | `public/` (página pública), `dashboard/` (Panel) y `lib/` (clientes de la API y del WebSocket) |
 | Infraestructura | `infra/lib/` | Constructs de CDK |
 
-Puertos del dominio: `LinkRepository`, `MetricsRepository`, `EventRepository`, `RealtimeAccessRepository`, `OwnerTokenProvider` y `RealtimeNotifier`, más `Clock`, `IdGenerator` y `RandomSource`. `design.md` relaciona cada principio SOLID con una decisión concreta.
+Puertos del dominio: `LinkRepository`, `MetricsRepository`, `EventRepository`, `RealtimeAccessRepository`, `OwnerTokenProvider` y `RealtimeNotifier`, más `Clock` (con `now` y `sleep`), `IdGenerator`, `RandomSource` y `Logger` (único punto con `console`). `design.md` relaciona cada principio SOLID con una decisión concreta.
 
 ## Seguridad
 - Token_Propietario de al menos 32 caracteres en SSM `SecureString`, enviado en la cabecera `Authorization` y comparado en tiempo constante.

@@ -210,7 +210,7 @@ CloudFormation no puede crear parámetros `SecureString`, así que el token del 
 
 ```powershell
 $token = [Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
-aws ssm put-parameter --name "/link-in-bio/owner-token" --type SecureString --value $token --region eu-west-1
+aws ssm put-parameter --name "/link-in-bio/owner-token" --type SecureString --value $token --region us-east-1
 ```
 
 ## Cómo reproducir esta fase

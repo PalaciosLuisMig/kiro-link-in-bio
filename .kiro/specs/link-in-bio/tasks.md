@@ -130,20 +130,20 @@ Definición de "terminada" según el tipo de tarea:
     - Comprobar que lo que `registerClick` y `registerVisit` entregan a los dobles (Evento y atributos de métricas) contiene únicamente los atributos de la lista blanca del diseño. La parte HTTP (cabeceras arbitrarias) se prueba en 10.5
     - **Validates: Requirements 11.1, 11.2**
 
-- [ ] 7. Dominio: acceso del Propietario y tiempo real
-  - [ ] 7.1 `authorizeOwner`
+- [x] 7. Dominio: acceso del Propietario y tiempo real
+  - [x] 7.1 `authorizeOwner`
     - `ServerMisconfigured` si el Token_Propietario tiene menos de 32 caracteres (gana a cualquier otro error: con un token de servidor corto, toda petición da 500, 5.5)
     - Compara los hash SHA-256 con `timingSafeEqual`
     - _Requirements: 5.2, 5.3, 5.4, 5.5_
-  - [ ] 7.2 `issueTicket`, `openConnection` y `closeConnection`
+  - [x] 7.2 `issueTicket`, `openConnection` y `closeConnection`
     - `issueTicket`: 32 bytes aleatorios en `base64url`; guarda solo el hash SHA-256 en hexadecimal de esa cadena; devuelve el ticket con caducidad de 60 s
     - `openConnection`: valida longitud y alfabeto del ticket antes de hashear, lo consume de forma atómica (`expiresAt > now`; en `now === expiresAt` se rechaza) y guarda la Conexión con caducidad de 24 h
     - `closeConnection`: elimina la Conexión
     - _Requirements: 5.7, 5.15, 5.16, 5.17, 11.5, 11.6, 11.7_
-  - [ ] 7.3 Test de propiedad de los tickets de un solo uso
+  - [x] 7.3 Test de propiedad de los tickets de un solo uso
     - **Property 16: Tickets de un solo uso** (incluido el ticket justo en el límite de 60 s)
     - **Validates: Requirements 5.7, 5.16**
-  - [ ] 7.4 `notifyPanels`
+  - [x] 7.4 `notifyPanels`
     - Lista primero las Conexiones no caducadas; si no hay ninguna, sale sin leer métricas ni esperar
     - Construye la instantánea con `getMetrics`; si `getMetrics` falla, lanza (la Lambda reintenta una vez)
     - Envía a todas las Conexiones con concurrencia fija (por ejemplo 10), elimina las que responden `gone` (410) y continúa ante otros fallos

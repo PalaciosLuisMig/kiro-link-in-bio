@@ -389,6 +389,76 @@
         "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
         "timestamp": 1793734473254
       }
+    ],
+    "7.1 `authorizeOwner`": [
+      {
+        "executionId": "78d3a6cb-de43-43f1-8f19-709fd2fd9f02",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793734979142
+      },
+      {
+        "executionId": "b6aa8808-24e4-4730-8e0f-37cbfdea3362",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793735073744
+      },
+      {
+        "executionId": "b6aa8808-24e4-4730-8e0f-37cbfdea3362",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793735079053
+      },
+      {
+        "executionId": "bbcc15d7-4b35-4147-853c-dc32bfddf636",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735984875
+      },
+      {
+        "executionId": "bbcc15d7-4b35-4147-853c-dc32bfddf636",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793736099630
+      }
+    ],
+    "7.2 `issueTicket`, `openConnection` y `closeConnection`": [
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735174519
+      },
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735357995
+      }
+    ],
+    "7.3 Test de propiedad de los tickets de un solo uso": [
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735374203
+      },
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735500642
+      }
+    ],
+    "7.4 `notifyPanels`": [
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735504127
+      },
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735648402
+      }
+    ],
+    "7. Dominio: acceso del Propietario y tiempo real": [
+      {
+        "executionId": "90436176-481f-44a6-9f63-da5e53399cf5",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793735648455
+      }
     ]
   }
 }

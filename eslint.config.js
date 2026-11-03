@@ -19,7 +19,13 @@ import prettier from 'eslint-config-prettier';
  */
 export default tseslint.config(
   {
-    ignores: ['**/dist/**', '**/cdk.out/**', '**/coverage/**', '**/*.tsbuildinfo'],
+    ignores: [
+      '**/dist/**',
+      '**/dist-types/**',
+      '**/cdk.out/**',
+      '**/coverage/**',
+      '**/*.tsbuildinfo',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

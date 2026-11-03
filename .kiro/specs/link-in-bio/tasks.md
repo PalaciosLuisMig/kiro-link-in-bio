@@ -244,37 +244,37 @@ Definición de "terminada" según el tipo de tarea:
     - Tabla on-demand con TTL y stream; runtime `nodejs24.x`; timeouts; para las políticas de **los 4 roles de Lambda del proyecto**, ninguna sentencia con acción `*`/`servicio:*` ni recurso `*` (si aparece una excepción como `dynamodb:ListStreams`, listarla con comentario); throttling por ruta sobre `AWS::ApiGatewayV2::Stage`; filtro del mapeo de Streams; registros de acceso desactivados; las tres políticas de cabeceras y el `no-store` en `/api/*`
     - _Requirements: 11.2, 12.8, 17.1, 17.2, 17.3, 17.4_
 
-- [ ] 14. Frontend: base y página pública (`frontend/src/`)
-  - [ ] 14.1 Configuración de Vite, esqueleto HTML y cliente de la API
+- [x] 14. Frontend: base y página pública (`frontend/src/`)
+  - [x] 14.1 Configuración de Vite, esqueleto HTML y cliente de la API
     - Build multipágina con los HTML en la raíz de `frontend/` (`index.html`, `panel.html`) y los scripts en `src/public/` y `src/dashboard/`; verificar que `frontend/dist` contiene exactamente `index.html`, `panel.html` y `assets/`
     - Esqueleto de `index.html` (donde la vista pinta) incluido aquí
     - Cliente de la API en `lib/` con `AbortController` a 5 s, importando de `shared` solo con `import type` y constantes (que `zod` no entre en el bundle público); CSS plano mobile first con la pila de fuentes del sistema (sin fuentes web, 11.4)
     - Módulo `frontend/src/lib/messages.ts` con los literales en español que fijan los requisitos
     - _Requirements: 1.5, 11.4, 13.1_
-  - [ ] 14.2 Lectura del canal (`public/channel.ts`)
+  - [x] 14.2 Lectura del canal (`public/channel.ts`)
     - Primer valor de `src` con `URLSearchParams.get`, recortado a 256 caracteres (UTF-16, misma unidad que `VisitRequest.channel`), sin normalizar
     - _Requirements: 4.1, 4.6, 4.8, 4.9_
-  - [ ] 14.3 Tests unitarios de la lectura del canal
+  - [x] 14.3 Tests unitarios de la lectura del canal
     - `src` repetido, `%E0%A4%A`, otros parámetros que no cambian el valor, valor de más de 256 caracteres; un test de que lo que emite `channel.ts` siempre cumple `VisitRequest`
     - _Requirements: 4.1, 4.6, 4.8, 4.9_
-  - [ ] 14.4 Clic y Visita (`public/click.ts`, `public/visit.ts`)
+  - [x] 14.4 Clic y Visita (`public/click.ts`, `public/visit.ts`)
     - Lógica pura con `fetch`, `navigate` y `location` inyectados
     - Clic principal (botón principal, Intro, y Ctrl/Cmd/Shift/Alt): escuchar `click`; `auxclick` con `button === 1` para el botón central. Con modificador o botón central no se llama a `preventDefault` (el navegador abre la pestaña); en el Clic principal, `navigate()` en el mismo tick, antes de cualquier espera
     - `fetch('/api/clicks', { keepalive: true })` sin esperar la respuesta ni reintentar
     - Visita una sola vez tras pintar la lista con éxito (incluso tras "Reintentar"), sin esperar respuesta ni reintentar
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 3.1, 3.3, 3.4, 3.5, 3.6_
-  - [ ] 14.5 Vista y orquestación (`public/links-view.ts`, `public/main.ts`)
+  - [x] 14.5 Vista y orquestación (`public/links-view.ts`, `public/main.ts`)
     - Estados carga ("Cargando enlaces…" con `role="status"`), lista, vacío y error con "Reintentar", usando solo `textContent` y `createElement` (un título `<script>` se ve como texto)
     - `main.ts` ordena la carga, el botón "Reintentar" y la Visita; sin cookies ni `localStorage`/`sessionStorage`
     - _Requirements: 1.1, 1.2, 1.4, 1.5, 1.6, 1.7, 1.8, 11.3, 11.4, 14.9_
-  - [ ] 14.6 Tests del frontend público (con `happy-dom`)
+  - [x] 14.6 Tests del frontend público (con `happy-dom`)
     - Instalar `happy-dom` (aprobado en D15 "si hace falta"). Con `fetch`, `navigate` y `location` inyectados: Visita una sola vez tras éxito y tras "Reintentar", ninguna tras fallo; Clic con `keepalive`; botón central y modificadores sin `preventDefault`; `navigate` en el mismo tick aunque `fetch` no resuelva; título `<script>` como texto; sin cookies ni `Storage`
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 3.1, 3.3, 3.4, 3.5, 3.6, 11.3, 14.9_
-  - [ ] 14.7 HTML y estilos accesibles de la página pública
+  - [x] 14.7 HTML y estilos accesibles de la página pública
     - `lang="es"`, título descriptivo, un único `h1`, `main` y `ul`; área táctil de 44 × 44 px, foco visible, `overflow-wrap: anywhere`
     - Función `contrastRatio` y test sobre las variables CSS de color (4,5:1 texto, 3:1 foco)
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.6, 13.7, 13.8, 15.3_
-  - [ ] 14.8 Presupuesto de tamaño del bundle público
+  - [x] 14.8 Presupuesto de tamaño del bundle público
     - Tras `vite build`, un script que falle si el bundle de `index.html` contiene `zod` o supera un tamaño objetivo (por ejemplo 30 KB gzip), como guarda del requisito de carga en 2 s
     - _Requirements: 13.1_
 

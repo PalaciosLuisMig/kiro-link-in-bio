@@ -168,6 +168,18 @@
         "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
         "timestamp": 1793728589885
       }
+    ],
+    "4. Dominio: puertos, entidades, errores y dobles en memoria": [
+      {
+        "executionId": "bf7434d8-31e2-4f37-b39a-e2598790572b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793729263739
+      },
+      {
+        "executionId": "bf7434d8-31e2-4f37-b39a-e2598790572b",
+        "chatSessionId": "sess_1c73c63e-8158-41c1-880f-beba8e08671b",
+        "timestamp": 1793729802091
+      }
     ]
   }
 }

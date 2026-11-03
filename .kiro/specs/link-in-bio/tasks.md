@@ -76,7 +76,7 @@ Definición de "terminada" según el tipo de tarea:
     - **Property 3: Lectura del elemento de métricas**
     - **Validates: Requirements 7.2, 7.3, 7.7**
 
-- [ ] 4. Dominio: puertos, entidades, errores y dobles en memoria
+- [x] 4. Dominio: puertos, entidades, errores y dobles en memoria
   - Entidades del dominio: `Link`, `StoredEvent`, `Connection`, `MetricsItem`
   - Puertos: `LinkRepository`, `MetricsRepository`, `EventRepository`, `RealtimeAccessRepository`, `OwnerTokenProvider`, `RealtimeNotifier`, `Clock` (con `now()` y `sleep(ms)`), `IdGenerator`, `RandomSource` y `Logger`
   - `Logger` acepta solo campos permitidos (código de error, ruta, id de invocación); su tipo impide registrar un cuerpo, cabeceras, token o ticket

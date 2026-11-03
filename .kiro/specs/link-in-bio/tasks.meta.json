@@ -471,6 +471,61 @@
         "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
         "timestamp": 1793736555641
       }
+    ],
+    "9.1 Constructores puros de expresiones de DynamoDB": [
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793736710988
+      },
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793736963336
+      }
+    ],
+    "9.2 Tests de los constructores y del mapeo de errores": [
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793736968422
+      },
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793737168550
+      }
+    ],
+    "9.3 Adaptadores de DynamoDB": [
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793737172532
+      },
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793737554098
+      }
+    ],
+    "9.4 Adaptadores de SSM, API Gateway Management, Node y `Logger`": [
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793737557775
+      },
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793737892278
+      }
+    ],
+    "9. Adaptadores de salida (`backend/src/lib/adapters/`)": [
+      {
+        "executionId": "0a0b8ffc-7c63-4db6-b176-2b1dbe0d5409",
+        "chatSessionId": "sess_e9c3d0b3-4d7c-4674-a9f1-93db5b75bbe4",
+        "timestamp": 1793737892344
+      }
     ]
   }
 }

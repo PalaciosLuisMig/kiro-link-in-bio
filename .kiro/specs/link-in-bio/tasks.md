@@ -152,21 +152,21 @@ Definición de "terminada" según el tipo de tarea:
 - [x] 8. Checkpoint del dominio
   - Ejecutar `npm run build`, `npm run lint` y `npm test` y comprobar que pasan. Preguntar al usuario si surgen dudas.
 
-- [ ] 9. Adaptadores de salida (`backend/src/lib/adapters/`)
-  - [ ] 9.1 Constructores puros de expresiones de DynamoDB
+- [x] 9. Adaptadores de salida (`backend/src/lib/adapters/`)
+  - [x] 9.1 Constructores puros de expresiones de DynamoDB
     - Funciones puras que construyen: el `ADD` del Clic y de la Visita, el `PutItem` condicional del Enlace (`attribute_not_exists(pk)`), el `UpdateItem` condicional de edición (`attribute_exists(pk)`), el `DeleteItem` condicional del ticket, el `TransactWriteItems` de la reordenación y el filtro de edad de eventos y `ttl > ahora`
     - Todos los nombres de atributo van como `ExpressionAttributeNames` (llevan `#` y `-`)
     - _Requirements: 2.5, 3.2, 5.16, 6.1, 6.4, 12.3, 16.3_
-  - [ ] 9.2 Tests de los constructores y del mapeo de errores
+  - [x] 9.2 Tests de los constructores y del mapeo de errores
     - Un Clic genera un único `UpdateItem` con los 4 `ADD` y una Visita con los 2; las condiciones del ticket y del Enlace son las del diseño
     - Con un `send` falso: `ConditionalCheckFailedException` en el ticket → "no consumido"; en la edición de un Enlace → `NotFound`; `TransactionCanceledException` en la reordenación → `ValidationError`
     - _Requirements: 2.5, 3.2, 5.16, 6.12, 6.13_
-  - [ ] 9.3 Adaptadores de DynamoDB
+  - [x] 9.3 Adaptadores de DynamoDB
     - `LinkRepository`, `MetricsRepository`, `EventRepository` y `RealtimeAccessRepository` sobre `LinkInBioTable` con `@aws-sdk/lib-dynamodb`, usando los constructores de 9.1
     - Cliente creado con `removeUndefinedValues: true` (los Eventos de Visita no tienen `title`); `ConsistentRead: true` en las lecturas que el diseño marca como consistentes
     - Ejecutar `runRepositoryContract` (tarea 4) contra estos adaptadores con un cliente falso
     - _Requirements: 6.1, 6.4, 11.6, 11.8, 16.3_
-  - [ ] 9.4 Adaptadores de SSM, API Gateway Management, Node y `Logger`
+  - [x] 9.4 Adaptadores de SSM, API Gateway Management, Node y `Logger`
     - `OwnerTokenProvider` lee `/link-in-bio/owner-token` con descifrado y lo cachea a nivel de módulo con caducidad (por ejemplo 5 min; rotar el token tarda hasta ese tiempo)
     - `RealtimeNotifier` usa `PostToConnection` y traduce el 410 a `gone`
     - `Clock` (`now` y `sleep`), `IdGenerator` (UUID), `RandomSource` y el adaptador de `Logger` (único punto con `console`) con las APIs de Node

@@ -13,7 +13,7 @@ Definición de "terminada" según el tipo de tarea:
 
 ## Tasks
 
-- [ ] 1. Preparar el monorepo y las herramientas de calidad
+- [x] 1. Preparar el monorepo y las herramientas de calidad
   - Comprobar `node -v` (debe ser 24.x, acorde con `.nvmrc` y `nodejs24.x`); si hay otra versión, instalar Node 24 con nvm-windows antes de seguir
   - Crear `package.json` raíz con npm workspaces (`shared`, `frontend`, `backend`, `infra`), `engines.node` `>=24`, y los scripts: `build` (`tsc -b` y luego `vite build` del frontend, en el orden `shared`, `frontend`, `backend`, `infra`), `lint` (`eslint .` y `prettier --check .`), `format` (`prettier --write .`) y `test` (`vitest --run`)
   - Crear `tsconfig.base.json` con `strict: true`; cada workspace tiene su `tsconfig.json` que lo extiende, con referencias de proyecto (`tsc -b`)

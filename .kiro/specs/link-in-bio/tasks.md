@@ -278,52 +278,52 @@ Definición de "terminada" según el tipo de tarea:
     - Tras `vite build`, un script que falle si el bundle de `index.html` contiene `zod` o supera un tamaño objetivo (por ejemplo 30 KB gzip), como guarda del requisito de carga en 2 s
     - _Requirements: 13.1_
 
-- [ ] 15. Frontend: Panel (`frontend/src/dashboard/`)
-  - [ ] 15.1 Reductor del Panel (`store.ts`)
+- [x] 15. Frontend: Panel (`frontend/src/dashboard/`)
+  - [x] 15.1 Reductor del Panel (`store.ts`)
     - Funciones puras `applySnapshot(state, snapshot, localNowMs)` y `advanceClock(state, localNowMs)`, sin `Date.now()` dentro
     - Reglas que hacen cierta la Property 10: `clockOffsetMs` sale de la instantánea con mayor `serverTime` (no de la última aplicada); el final de la ventana de 60 Minutos solo avanza (`max`); el feed desempata los eventos de igual hora por `id`
     - Épocas, máximo por contador, ventana de 60 Minutos con `clockOffsetMs`, feed de 20 eventos sin duplicados, canales ordenados con `compareChannels`
     - _Requirements: 7.3, 7.6, 8.3, 8.4, 8.5, 8.6, 8.9, 8.10, 9.1, 9.2, 16.6_
-  - [ ] 15.2 Test de propiedad del reductor
+  - [x] 15.2 Test de propiedad del reductor
     - **Property 10: Reductor del Panel (monotonía, idempotencia y conmutatividad)**
     - **Validates: Requirements 8.3, 8.5, 10.3**
-  - [ ] 15.3 Test de propiedad de épocas distintas
+  - [x] 15.3 Test de propiedad de épocas distintas
     - **Property 11: Épocas distintas**
     - **Validates: Requirements 8.6, 16.6**
-  - [ ] 15.4 Test de propiedad de la ventana de 60 Minutos
+  - [x] 15.4 Test de propiedad de la ventana de 60 Minutos
     - **Property 12: Ventana de 60 Minutos**
     - **Validates: Requirements 7.3, 8.4, 8.9, 8.10**
-  - [ ] 15.5 Test de propiedad del feed de actividad
+  - [x] 15.5 Test de propiedad del feed de actividad
     - **Property 13: Feed de actividad**
     - **Validates: Requirements 9.1, 9.2**
-  - [ ] 15.6 Sesión y cliente de la API del Panel (`auth.ts`, `api.ts`)
+  - [x] 15.6 Sesión y cliente de la API del Panel (`auth.ts`, `api.ts`)
     - Token recortado, obligatorio, guardado solo en `sessionStorage`, enviado en `Authorization`; borrado al cerrar sesión o ante un 401
     - Mensajes "Token no válido" y de error de conexión distintos
     - _Requirements: 5.1, 5.8, 5.9, 5.10, 5.11, 5.12, 5.13_
-  - [ ] 15.7 Tests de la sesión del Panel
+  - [x] 15.7 Tests de la sesión del Panel
     - Con `fetch` y `sessionStorage` falsos: recorte, valor vacío sin petición, 401 borra el token, error de red muestra el otro mensaje, el token nunca aparece en la URL, un token con caracteres no Latin-1 (`fetch` lanza `TypeError` al armar la cabecera) se trata como "Token no válido"
     - _Requirements: 5.1, 5.8, 5.9, 5.10, 5.11, 5.12, 5.13_
-  - [ ] 15.8 Cliente WebSocket con reconexión (`frontend/src/lib/` y `dashboard/realtime.ts`)
+  - [x] 15.8 Cliente WebSocket con reconexión (`frontend/src/lib/` y `dashboard/realtime.ts`)
     - `reconnectDelayMs(failedAttempts)` pura: 0→1000, 1→2000, 2→4000, 3→8000, 4→16000, 5 o más→30000
     - Ticket nuevo antes de cada intento, indicadores "Conectando…" y "Reconectando…", Métricas al abrir (reintento cada 5 s) y cada 30 s, `keepalive` cada 5 min, parada ante 401 y al cerrar sesión
     - _Requirements: 5.14, 8.12, 8.13, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8_
-  - [ ] 15.9 Tests del cliente WebSocket
+  - [x] 15.9 Tests del cliente WebSocket
     - **Property 15: Espera de reconexión** sobre `reconnectDelayMs`
     - Con `WebSocket` falso y `vi.useFakeTimers()`: reintentos, 401 detiene, cerrar sesión cancela, Métricas cada 5 s hasta éxito y cada 30 s, keepalive a los 5 min, un cierre inesperado a las 2 h reconecta
     - **Validates: Requirements 10.1, 10.4**
-  - [ ] 15.10 Vistas del Panel — acceso y lista de Enlaces (`views/`)
+  - [x] 15.10 Vistas del Panel — acceso y lista de Enlaces (`views/`)
     - Formulario de acceso; lista con crear, editar, activar/desactivar, subir/bajar y eliminar (con `<dialog>`, `showModal()` y foco inicial en "Cancelar"); límite de 10 con el mensaje de 6.10
     - Accesibilidad: solo teclado (sin arrastrar), `aria-label` en cada botón de icono ("Subir «título»"), foco gestionado tras reordenar y tras cerrar un diálogo; solo `textContent` para los textos del Enlace
     - Volver a pedir Enlaces y Métricas ante un Enlace desconocido o un desajuste, como máximo una vez cada 5 s
     - _Requirements: 5.2, 6.10, 6.14, 6.15, 6.16, 8.11, 14.9, 15.1, 15.3_
-  - [ ] 15.11 Vistas del Panel — métricas, gráfica, feed y reinicio (`views/`, `announcer.ts`)
+  - [x] 15.11 Vistas del Panel — métricas, gráfica, feed y reinicio (`views/`, `announcer.ts`)
     - Métricas (totales, Clics por Enlace, canales), estado vacío y error con "Reintentar"
     - Gráfica SVG (`role="img"`, barras con atributos SVG, sin `style` en línea por la CSP) con una `<table>` equivalente (con `<caption>`, los 60 Minutos y su hora en la zona del navegador) oculta visualmente pero no con `display: none`
     - Feed con hora HH:MM:SS (`hourCycle: 'h23'`); `announcer.ts` con `aria-live="polite"` y un resumen cada 10 s como máximo ("12 eventos nuevos")
     - Reinicio de métricas con confirmación (diálogo de 16.1); `prefers-reduced-motion` desactiva animaciones
     - `<meta name="robots" content="noindex">` en `panel.html` además de la cabecera
     - _Requirements: 7.1, 7.2, 7.4, 7.5, 7.8, 7.9, 7.10, 9.4, 9.5, 9.6, 15.2, 15.4, 15.5, 15.6, 16.1, 16.2, 16.4_
-  - [ ] 15.12 Tests de las piezas puras del Panel
+  - [x] 15.12 Tests de las piezas puras del Panel
     - `announcer.ts` (un resumen cada 10 s como máximo), el formateo HH:MM:SS y el límite de una vez cada 5 s para volver a pedir datos
     - _Requirements: 8.11, 9.4, 9.5_
 

@@ -10,11 +10,18 @@ export type FetchLike = typeof fetch;
 /** Time limit of a request that must answer quickly (Requirements 1.5, 3.3). */
 export const REQUEST_TIMEOUT_MS = 5000;
 
-/** Why a request failed, without any detail about its content. */
+/**
+ * Why a request failed. It carries no request content. For an `http` failure it
+ * may also carry the stable `code` and `reason` of the API's error body
+ * (`{ error, reason }`), so a caller can tell a full list (409 `limit_reached`)
+ * from a stale one (`ids_not_permutation`) without parsing text.
+ */
 export class ApiError extends Error {
   constructor(
     readonly kind: 'timeout' | 'network' | 'http',
     readonly status?: number,
+    readonly code?: string,
+    readonly reason?: string,
   ) {
     super(`API request failed: ${kind}${status === undefined ? '' : ` ${status}`}`);
     this.name = 'ApiError';
@@ -102,4 +109,60 @@ export async function postJson(
     return;
   }
   await withTimeout(options.timeoutMs, send);
+}
+
+export interface JsonRequestOptions {
+  readonly method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+  /** Sent as JSON when present. */
+  readonly body?: unknown;
+  /** Extra headers, e.g. `Authorization`. Never put a token in the URL. */
+  readonly headers?: Readonly<Record<string, string>>;
+  /** Defaults to {@link REQUEST_TIMEOUT_MS}. */
+  readonly timeoutMs?: number;
+}
+
+/** Reads `{ error, reason }` from a failed response, if it has that shape. */
+async function readErrorBody(response: Response): Promise<{ code?: string; reason?: string }> {
+  try {
+    const body = (await response.json()) as { error?: unknown; reason?: unknown };
+    return {
+      ...(typeof body.error === 'string' ? { code: body.error } : {}),
+      ...(typeof body.reason === 'string' ? { reason: body.reason } : {}),
+    };
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Generic JSON request with a time limit, for the admin API.
+ *
+ * Resolves with the parsed body, or `undefined` for a `204`. Any failure is an
+ * {@link ApiError}: `timeout`, `network`, or `http` with the status and, when the
+ * body has the API's error shape, its `code` and `reason`.
+ */
+export async function requestJson<T>(
+  fetchFn: FetchLike,
+  path: string,
+  options: JsonRequestOptions,
+): Promise<T> {
+  return withTimeout(options.timeoutMs ?? REQUEST_TIMEOUT_MS, async (signal) => {
+    const response = await fetchFn(path, {
+      method: options.method,
+      signal,
+      headers: {
+        ...(options.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+        ...options.headers,
+      },
+      ...(options.body !== undefined ? { body: JSON.stringify(options.body) } : {}),
+    });
+    if (!response.ok) {
+      const { code, reason } = await readErrorBody(response);
+      throw new ApiError('http', response.status, code, reason);
+    }
+    if (response.status === 204) {
+      return undefined as T;
+    }
+    return (await response.json()) as T;
+  });
 }

@@ -1,0 +1,478 @@
+/*
+ * Owner's Panel. It loads AFTER the public page's styles, so it shares the same
+ * palette, the light and dark themes, the "key" buttons and the base layout, and
+ * only adds what the Panel needs.
+ *
+ * Everything that carries text keeps 4.5:1 and every focus ring 3:1, in both
+ * themes (panel-styles.test.ts checks the colors added here). There are no inline
+ * styles: the Panel's CSP does not allow them, so the chart is drawn with SVG
+ * attributes and all looks live in this file.
+ */
+
+:root {
+  --color-danger: #b42318;
+  --color-on-danger: #ffffff;
+}
+
+/* Same rule as the public palette: the system dark theme, or an explicit choice. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-danger: #ff9b92;
+    --color-on-danger: #1a0705;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-danger: #ff9b92;
+  --color-on-danger: #1a0705;
+}
+
+/* The Panel is wider than the public page. */
+.panel-page main {
+  max-width: 72rem;
+}
+
+/* --- Visually hidden, but still read by assistive technology --------------- */
+
+/* Never `display: none`: it would remove the chart's table from the page for a
+   screen reader (Requirement 15.2). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Forms and buttons ------------------------------------------------------ */
+
+.label {
+  display: block;
+  margin: 1rem 0 0.375rem;
+  font-weight: 700;
+}
+
+.hint {
+  margin: 0 0 0.5rem;
+}
+
+.field {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: var(--key-border) solid var(--color-ink);
+  border-radius: 0;
+  background: var(--color-key);
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.field:disabled {
+  opacity: 0.55;
+}
+
+.button {
+  min-height: 2.75rem; /* 44 px */
+  padding: 0.5rem 1rem;
+  border: var(--key-border) solid var(--color-ink);
+  background: var(--color-key);
+  box-shadow: 3px 3px 0 var(--color-ink);
+  color: var(--color-ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 70ms ease-out,
+    box-shadow 70ms ease-out;
+}
+
+.button--primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.button--danger {
+  background: var(--color-danger);
+  color: var(--color-on-danger);
+}
+
+.button--small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:not(:disabled):hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--color-ink);
+  }
+}
+
+.button:not(:disabled):active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-ink);
+}
+
+.button:focus-visible,
+.field:focus-visible,
+.section-title:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.message--error {
+  font-weight: 700;
+}
+
+/* --- Layout ------------------------------------------------------------------ */
+
+.login {
+  max-width: 28rem;
+}
+
+.login .button {
+  margin-top: 1rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.connection {
+  min-height: 1.4em;
+  margin: 0;
+  font-weight: 700;
+}
+
+.panel-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/*
+ * Two columns on a wide screen: the metrics on one side, the links and the feed on
+ * the other. Each column stacks by itself, so a tall column cannot stretch a row
+ * and leave a gap in the other one.
+ *
+ * On a phone the two wrappers dissolve (`display: contents`) and the sections form
+ * one list; `order` puts the links after the chart and before the channels.
+ */
+.panel-col {
+  display: contents;
+}
+
+.panel-section {
+  min-width: 0;
+}
+
+.panel-section--totals {
+  order: 1;
+}
+
+.panel-section--chart {
+  order: 2;
+}
+
+.panel-section--links {
+  order: 3;
+}
+
+.panel-section--channels {
+  order: 4;
+}
+
+.panel-section--feed {
+  order: 5;
+}
+
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.subsection-title {
+  margin: 1.5rem 0 0;
+  font-size: 1.0625rem;
+}
+
+@media (min-width: 60rem) {
+  .panel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .panel-col {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+    min-width: 0;
+  }
+
+  /* Inside a column the DOM order is the right one. */
+  .panel-section {
+    order: 0;
+  }
+}
+
+/* --- Totals ------------------------------------------------------------------ */
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.total {
+  padding: 0.75rem 1rem;
+  border: var(--key-border) solid var(--color-ink);
+  background: var(--color-key);
+  box-shadow: var(--key-offset) var(--key-offset) 0 var(--color-ink);
+}
+
+.total dt {
+  font-weight: 700;
+}
+
+.total dd {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Chart ------------------------------------------------------------------- */
+
+.chart-box {
+  padding: 0.75rem;
+  border: var(--key-border) solid var(--color-ink);
+  background: var(--color-key);
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bar {
+  fill: var(--color-accent);
+}
+
+.bar--now {
+  fill: var(--color-ink);
+}
+
+.chart-axis {
+  stroke: var(--color-ink);
+  stroke-width: 1;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Tables ------------------------------------------------------------------ */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-key);
+  border: var(--key-border) solid var(--color-ink);
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-ink);
+  text-align: left;
+}
+
+.table thead th {
+  border-bottom: var(--key-border) solid var(--color-ink);
+}
+
+.table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Links ------------------------------------------------------------------- */
+
+.link-rows,
+.feed {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link-row {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: var(--key-border) solid var(--color-ink);
+  background: var(--color-key);
+  box-shadow: 3px 3px 0 var(--color-ink);
+}
+
+.link-row--inactive .link-info {
+  opacity: 0.7;
+}
+
+.link-info {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.link-title {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.link-url {
+  font-size: 0.9375rem;
+  opacity: 0.8;
+  overflow-wrap: anywhere;
+}
+
+.link-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.link-state {
+  padding: 0.0625rem 0.5rem;
+  border: var(--key-border) solid var(--color-ink);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.link-state--inactive {
+  border-style: dashed;
+}
+
+.link-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.edit-form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.add-form {
+  margin-top: 1.5rem;
+}
+
+.add-form .button {
+  margin-top: 1rem;
+}
+
+/* --- Feed -------------------------------------------------------------------- */
+
+.feed-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid var(--color-ink);
+  background: var(--color-key);
+}
+
+.feed-item--visit {
+  border-left-style: dashed;
+}
+
+.feed-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.feed-kind {
+  font-weight: 700;
+}
+
+.feed-title,
+.feed-channel {
+  overflow-wrap: anywhere;
+}
+
+.feed-channel {
+  margin-left: auto;
+  font-size: 0.9375rem;
+  opacity: 0.8;
+}
+
+/* --- Confirmation dialog ----------------------------------------------------- */
+
+.dialog {
+  max-width: min(28rem, calc(100vw - 2rem));
+  padding: 1.5rem;
+  border: var(--key-border) solid var(--color-ink);
+  background: var(--color-key);
+  color: var(--color-ink);
+  box-shadow: 6px 6px 0 var(--color-ink);
+}
+
+.dialog::backdrop {
+  background: rgb(5 12 22 / 0.65);
+}
+
+.dialog-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* --- Motion (Requirement 15.6) ----------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

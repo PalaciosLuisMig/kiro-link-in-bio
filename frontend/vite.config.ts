@@ -66,15 +66,32 @@ function publicBundleBudget(): Plugin {
   };
 }
 
+/**
+ * Where the local API server listens (`npm run dev:api`). Only the dev server uses
+ * this: in AWS, CloudFront sends `/api/*` to API Gateway on the same origin.
+ */
+const LOCAL_API = 'http://127.0.0.1:8787';
+
 // Multipage build; the HTML entry points live at the frontend root.
-// The public page is here; the owner dashboard (`panel.html`) arrives in task 15.
+// Two pages: the public one (`index.html`) and the owner Panel (`panel.html`). The
+// size budget below applies to the public page only.
 export default defineConfig({
   plugins: [publicBundleBudget()],
+  // Development only (`vite`, not `vite build`). The browser talks to ONE origin, as
+  // it does behind CloudFront: `/api` goes to the local API and `/ws` is the
+  // WebSocket the Panel connects to.
+  server: {
+    proxy: {
+      '/api': { target: LOCAL_API },
+      '/ws': { target: LOCAL_API, ws: true },
+    },
+  },
   build: {
     outDir: 'dist',
     rollupOptions: {
       input: {
         index: new URL('./index.html', import.meta.url).pathname,
+        panel: new URL('./panel.html', import.meta.url).pathname,
       },
     },
   },

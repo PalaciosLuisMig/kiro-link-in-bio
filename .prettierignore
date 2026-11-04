@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-types/
+cdk.out/
+coverage/
+*.tsbuildinfo
+package-lock.json
+
+# Documentation and Kiro-managed files are authored as prose (Spanish) and
+# should not be reflowed by Prettier's printWidth.
+.kiro/
+docs/

@@ -334,7 +334,7 @@ Definición de "terminada" según el tipo de tarea:
   - Recibe la URL y el token por variables de entorno; no se ejecuta en `npm test`. Se ubica en `infra/scripts/` porque `scripts/` en la raíz no figura en `structure.md`
   - _Requirements: 8.1, 8.2, 8.7, 8.8, 12.1, 12.2, 12.4, 12.5_
 
-- [ ] 17. Checkpoint final
+- [x] 17. Checkpoint final
   - Ejecutar `npm run build`, `npm run lint`, `npm test` y `npx cdk synth` (desde `infra/`) y comprobar que pasan; verificar que `frontend/dist` contiene `index.html`, `panel.html` y `assets/`. Preguntar al usuario si surgen dudas.
 
 ## Notes

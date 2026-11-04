@@ -1,0 +1,4 @@
+# Keep LF in the repository and in the working tree on every machine.
+# Prettier requires LF (.prettierrc: "endOfLine": "lf"). Without this, Git on Windows
+# (core.autocrlf=true) checks files out as CRLF and `npm run lint` fails on all of them.
+* text=auto eol=lf

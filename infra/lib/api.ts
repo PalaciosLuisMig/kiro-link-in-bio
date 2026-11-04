@@ -91,9 +91,9 @@ export class Api extends Construct {
       [HttpMethod.POST, API_ROUTES.visits],
       [HttpMethod.POST, API_ROUTES.clicks],
     ];
-    for (const [method, path] of publicRoutes) {
-      this.httpApi.addRoutes({ path, methods: [method], integration: publicIntegration });
-    }
+    const routes = publicRoutes.flatMap(([method, path]) =>
+      this.httpApi.addRoutes({ path, methods: [method], integration: publicIntegration }),
+    );
 
     const adminRoutes: [HttpMethod, string][] = [
       [HttpMethod.POST, API_ROUTES.realtimeTickets],
@@ -105,9 +105,11 @@ export class Api extends Construct {
       [HttpMethod.DELETE, API_ROUTES.adminLink],
       [HttpMethod.PUT, API_ROUTES.adminLinksOrder],
     ];
-    for (const [method, path] of adminRoutes) {
-      this.httpApi.addRoutes({ path, methods: [method], integration: adminIntegration });
-    }
+    routes.push(
+      ...adminRoutes.flatMap(([method, path]) =>
+        this.httpApi.addRoutes({ path, methods: [method], integration: adminIntegration }),
+      ),
+    );
 
     // The L2 `HttpStage` only supports one limit for the whole stage, so the
     // per-route limits go on the L1 `CfnStage`, with the exact route keys.
@@ -123,5 +125,10 @@ export class Api extends Construct {
         { ThrottlingRateLimit: rate, ThrottlingBurstLimit: burst },
       ]),
     );
+    // CloudFormation rejects a stage whose `RouteSettings` name a route that does not
+    // exist yet ("Unable to find Route by key POST /api/clicks"). Nothing else ties
+    // the stage to the routes, so without this it can be created first and the whole
+    // deploy rolls back. The deploy found it; a template test cannot see the order.
+    cfnStage.node.addDependency(...routes);
   }
 }

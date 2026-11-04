@@ -14,6 +14,9 @@
   ],
   "scripts": {
     "build": "tsc -b && npm run build --workspace frontend",
+    "dev": "tsc -b shared && concurrently --names api,web --prefix-colors blue,green \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "tsx --env-file-if-exists=.env backend/src/dev/main.ts",
+    "dev:web": "npm run dev --workspace frontend",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "vitest --run"
@@ -22,6 +25,7 @@
     "@eslint/js": "10.0.1",
     "@types/aws-lambda": "8.10.164",
     "@types/node": "26.6.6",
+    "concurrently": "10.0.6",
     "eslint": "10.14.0",
     "eslint-config-prettier": "10.1.8",
     "fast-check": "4.10.2",

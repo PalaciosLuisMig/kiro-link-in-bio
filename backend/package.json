@@ -9,5 +9,10 @@
     "@aws-sdk/client-ssm": "3.1161.0",
     "@aws-sdk/lib-dynamodb": "3.1161.0",
     "@link-in-bio/shared": "*"
+  },
+  "devDependencies": {
+    "@types/ws": "8.18.2",
+    "tsx": "4.23.15",
+    "ws": "8.22.1"
   }
 }

@@ -3,5 +3,6 @@ dist/
 cdk.out/
 *.tsbuildinfo
 .env*
+!.env.example
 coverage/
 dist-types/

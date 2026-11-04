@@ -28,7 +28,7 @@ import type { OwnerTokenProvider } from './ports.js';
  * Minimum length (characters) of a correctly configured owner token. A shorter
  * configured token means the server is misconfigured (Requirement 5.5).
  */
-const MIN_TOKEN_LENGTH = 32;
+export const MIN_TOKEN_LENGTH = 32;
 
 /**
  * Computes the SHA-256 digest of a token as a fixed-length buffer.

@@ -32,6 +32,28 @@ export class LoadTestConfigError extends Error {
 }
 
 /**
+ * Checks a base URL and keeps only its origin. It must be `https://`, except for a
+ * server on this same machine (`http://localhost`, `127.0.0.1` or `[::1]`).
+ *
+ * @throws {LoadTestConfigError} when it is not a valid URL or is plain `http://`.
+ */
+export function parseSiteUrl(rawUrl: string): string {
+  let url: URL;
+  try {
+    url = new URL(rawUrl);
+  } catch {
+    throw new LoadTestConfigError('LOAD_TEST_API_URL no es una URL válida.');
+  }
+  const local = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
+  if (url.protocol !== 'https:' && !(url.protocol === 'http:' && local)) {
+    throw new LoadTestConfigError(
+      'LOAD_TEST_API_URL debe empezar por https:// (http:// solo se admite en localhost).',
+    );
+  }
+  return url.origin;
+}
+
+/**
  * Reads `LOAD_TEST_API_URL` and `LOAD_TEST_TOKEN`. The URL must be `https://`, so
  * the token never travels in clear text, except for a server on this same machine
  * (`http://localhost`, `127.0.0.1` or `[::1]`), which allows trying the script
@@ -52,19 +74,7 @@ export function readLoadTestConfig(
     throw new LoadTestConfigError(`Faltan variables de entorno: ${missing.join(' y ')}.`);
   }
 
-  let url: URL;
-  try {
-    url = new URL(rawUrl);
-  } catch {
-    throw new LoadTestConfigError('LOAD_TEST_API_URL no es una URL válida.');
-  }
-  const local = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
-  if (url.protocol !== 'https:' && !(url.protocol === 'http:' && local)) {
-    throw new LoadTestConfigError(
-      'LOAD_TEST_API_URL debe empezar por https:// (http:// solo se admite en localhost).',
-    );
-  }
-  return { apiUrl: url.origin, token };
+  return { apiUrl: parseSiteUrl(rawUrl), token };
 }
 
 /**
@@ -83,6 +93,22 @@ export function percentile(values: readonly number[], p: number): number {
   const sorted = [...values].sort((a, b) => a - b);
   const rank = Math.max(1, Math.ceil((p / 100) * sorted.length));
   return sorted[rank - 1] as number;
+}
+
+/**
+ * How many requests ended with each HTTP status, most frequent first, for example
+ * `202 x475, 503 x25`. Status 0 means the request failed before getting an answer.
+ * It tells a throttling (429) from a server error (5xx) from a network failure.
+ */
+export function describeStatuses(statuses: readonly number[]): string {
+  const counts = new Map<number, number>();
+  for (const status of statuses) {
+    counts.set(status, (counts.get(status) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0] - b[0])
+    .map(([status, count]) => `${status} x${count}`)
+    .join(', ');
 }
 
 /** When to send each request: evenly spread over `spreadMs`, the first one at 0. */
@@ -248,7 +274,7 @@ export function evaluateClickRun(input: ClickRunInput): Check[] {
       'Los clics se confirman con 202',
       '12.1',
       accepted === expected && statuses.length === expected,
-      `${accepted} de ${statuses.length} enviados (esperados ${expected})`,
+      `${accepted} de ${statuses.length} enviados (esperados ${expected}). Estados: ${describeStatuses(statuses)}`,
     ),
     check(
       'El contador total de clics sube exactamente lo enviado',
@@ -353,7 +379,7 @@ export function evaluateVisitRun(input: VisitRunInput): Check[] {
       'Las visitas se confirman con 202',
       '12.5',
       accepted === expected && statuses.length === expected,
-      `${accepted} de ${statuses.length} enviadas (esperadas ${expected})`,
+      `${accepted} de ${statuses.length} enviadas (esperadas ${expected}). Estados: ${describeStatuses(statuses)}`,
     ),
     check(
       'El contador total de visitas sube exactamente lo enviado',

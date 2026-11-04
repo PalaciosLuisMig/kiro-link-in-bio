@@ -20,7 +20,9 @@
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "vitest --run",
-    "load-test": "tsc -b shared && npm run load-test --workspace infra"
+    "load-test": "tsc -b shared && npm run load-test --workspace infra",
+    "smoke": "tsc -b shared && npm run smoke --workspace infra",
+    "warm-up": "tsc -b shared && npm run warm-up --workspace infra"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

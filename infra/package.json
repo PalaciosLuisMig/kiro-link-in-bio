@@ -13,6 +13,8 @@
     "tsx": "4.23.15"
   },
   "scripts": {
-    "load-test": "tsx scripts/load-test.ts"
+    "load-test": "tsx scripts/load-test.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "warm-up": "tsx scripts/warm-up.ts"
   }
 }

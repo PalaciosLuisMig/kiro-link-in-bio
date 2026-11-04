@@ -11,5 +11,8 @@
     "aws-cdk": "2.1147.0",
     "esbuild": "0.28.2",
     "tsx": "4.23.15"
+  },
+  "scripts": {
+    "load-test": "tsx scripts/load-test.ts"
   }
 }

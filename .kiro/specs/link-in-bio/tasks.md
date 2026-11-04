@@ -327,7 +327,7 @@ Definición de "terminada" según el tipo de tarea:
     - `announcer.ts` (un resumen cada 10 s como máximo), el formateo HH:MM:SS y el límite de una vez cada 5 s para volver a pedir datos
     - _Requirements: 8.11, 9.4, 9.5_
 
-- [ ] 16. Script de prueba de carga (`infra/scripts/`)
+- [x] 16. Script de prueba de carga (`infra/scripts/`)
   - Script Node que lanza 500 Clics en 10 s, comprueba la suma de los contadores y el p95 de las respuestas, y con un cliente WebSocket mide la latencia de cada 202 hasta el mensaje (p95 inferior a 3 s)
   - Emparejamiento de latencia definido: el n-ésimo 202 se empareja con el primer mensaje cuyo `totals.clicks` es al menos la base más n, en una función pura con test
   - Comprobación 8.8: tras el último 202, esperar 4 s y comprobar que el último mensaje coincide con `GET /api/admin/metrics`

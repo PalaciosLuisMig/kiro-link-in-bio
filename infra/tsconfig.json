@@ -7,5 +7,5 @@
     "types": ["node"]
   },
   "references": [{ "path": "../shared" }],
-  "include": ["bin", "lib"]
+  "include": ["bin", "lib", "scripts"]
 }

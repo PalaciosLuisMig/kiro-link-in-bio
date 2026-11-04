@@ -19,7 +19,8 @@
     "dev:web": "npm run dev --workspace frontend",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "load-test": "tsc -b shared && npm run load-test --workspace infra"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

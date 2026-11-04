@@ -295,6 +295,22 @@ describe('Api', () => {
     }
   });
 
+  test('the stage waits for every route, so the throttled route keys exist when it is created', () => {
+    const stage = Object.values(
+      template.findResources('AWS::ApiGatewayV2::Stage', {
+        Properties: { RouteSettings: Match.anyValue() },
+      }),
+    )[0];
+    const dependsOn = (stage?.DependsOn ?? []) as string[];
+    const routes = template.findResources('AWS::ApiGatewayV2::Route', {
+      Properties: { RouteKey: Match.stringLikeRegexp('^(GET|POST|PUT|PATCH|DELETE) /api/') },
+    });
+    expect(Object.keys(routes)).toHaveLength(expectedRouteKeys.length);
+    for (const logicalId of Object.keys(routes)) {
+      expect(dependsOn).toContain(logicalId);
+    }
+  });
+
   test('the HTTP API has no CORS configuration', () => {
     const properties = propertiesOf(stack.api.httpApi);
     expect(properties.CorsConfiguration).toBeUndefined();

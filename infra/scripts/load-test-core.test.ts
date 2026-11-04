@@ -9,6 +9,7 @@ import {
   REQUESTS,
   SPREAD_MS,
   counterDifferences,
+  describeStatuses,
   evaluateClickRun,
   evaluateVisitRun,
   increments,
@@ -90,6 +91,34 @@ describe('percentile', () => {
         },
       ),
     );
+  });
+});
+
+describe('describeStatuses', () => {
+  test('counts each status, most frequent first, ties by status', () => {
+    expect(describeStatuses([202, 202, 503, 202, 429, 503])).toBe('202 x3, 503 x2, 429 x1');
+    expect(describeStatuses([500, 429])).toBe('429 x1, 500 x1');
+  });
+
+  test('status 0 (no answer) is shown too, and no requests give an empty text', () => {
+    expect(describeStatuses([0, 202])).toBe('0 x1, 202 x1');
+    expect(describeStatuses([])).toBe('');
+  });
+
+  test('a failed click run says which statuses the lost requests got', () => {
+    const before = snapshot();
+    const statuses = [...Array<number>(REQUESTS - 25).fill(202), ...Array<number>(25).fill(503)];
+    const checks = evaluateClickRun({
+      expected: REQUESTS,
+      before,
+      after: afterClicks(before, REQUESTS - 25),
+      statuses,
+      responseMs: Array<number>(REQUESTS).fill(50),
+      pairing: { latencies: [100], unmatched: 0 },
+      lastMessage: afterClicks(before, REQUESTS - 25),
+    });
+    expect(checks[0]?.ok).toBe(false);
+    expect(checks[0]?.detail).toContain('202 x475, 503 x25');
   });
 });
 

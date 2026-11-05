@@ -82,7 +82,7 @@ Si se quiere recuperar alguna de las funciones no incluidas, hay que añadir sus
 - Arquitectura de capas y reglas de dependencias (se parte de lo definido en `structure.md`).
 
 ## Cómo reproducir esta fase
-1. Crea la rama: `git checkout -b fase-1-requirements`.
+1. Crea la rama a partir de la fase 0 completada: `git fetch` y `git switch -c fase-1-requirements origin/fase-0-steering`. No partas de `main`: ya tiene fusionadas todas las fases.
 2. En Kiro, crea un spec nuevo y escribe la idea en una frase (por ejemplo: "una página de enlaces que cuenta clics y un panel con métricas en tiempo real").
 3. Elige empezar por los requisitos. Kiro genera `requirements.md` en notación EARS.
 4. Revisa los requisitos con Kiro en varias rondas: ambigüedades, contradicciones entre criterios, seguridad, accesibilidad y límites reales de los servicios de AWS.

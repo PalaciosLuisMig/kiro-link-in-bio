@@ -59,7 +59,7 @@ export interface LocalBackend {
 
 /** Sample links, so the public page is not empty the first time it is opened. */
 export const SEED_LINKS = [
-  { title: '📜 Código Fuente', url: 'https://github.com/PalaciosLuisMig/demo-ssd-kiro' },
+  { title: '📜 Código Fuente', url: 'https://github.com/PalaciosLuisMig/kiro-link-in-bio' },
   { title: '🌲 Mi GitHub', url: 'https://github.com/palaciosluismig' },
   { title: '🪪 Mi LinkedIn', url: 'https://www.linkedin.com/in/palaciosluismig/' },
   { title: '🚀 Mi blog', url: 'https://luispalacios.dev/blog/ya-conoces-kiro/' },

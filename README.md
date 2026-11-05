@@ -239,7 +239,7 @@ Ejemplo: replicar la fase 2 (diseño).
 1. Clona el repositorio y trae todas las ramas:
 
    ```bash
-   git clone https://github.com/PalaciosLuisMig/demo-ssd-kiro.git && cd demo-ssd-kiro
+   git clone https://github.com/PalaciosLuisMig/kiro-link-in-bio.git && cd kiro-link-in-bio
    ```
 
 2. Crea la rama de la fase a partir de la fase anterior (la 1, ya completada). Es el paso 1 de la guía de la fase:

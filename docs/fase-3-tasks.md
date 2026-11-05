@@ -52,7 +52,7 @@ Hasta que la tarea 1 cree el `package.json` raíz con los scripts `lint` y `test
 Los hooks se cargan al iniciar una sesión de Kiro. También se pueden ver y editar en la sección "Agent Hooks" del explorador.
 
 ## Cómo reproducir esta fase
-1. Actualiza `main` y crea la rama: `git checkout main`, `git pull` y `git checkout -b fase-3-tasks`.
+1. Crea la rama a partir de la fase 2 completada: `git fetch` y `git switch -c fase-3-tasks origin/fase-2-design`. No partas de `main`: ya tiene fusionadas todas las fases.
 2. En el spec de Kiro, pide crear el plan de tareas a partir del diseño aprobado.
 3. Revisa que el orden va de dentro hacia fuera, que cada tarea cita sus requisitos y que cada propiedad tiene su test.
 4. Crea los hooks desde la sección "Agent Hooks" o pidiéndoselo a Kiro: al guardar un archivo TypeScript, ejecutar el linter y los tests unitarios.

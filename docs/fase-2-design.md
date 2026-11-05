@@ -214,9 +214,8 @@ aws ssm put-parameter --name "/link-in-bio/owner-token" --type SecureString --va
 ```
 
 ## Cómo reproducir esta fase
-1. Actualiza `main` y crea la rama: `git checkout main`, `git pull` y `git checkout -b fase-2-design`.
+1. Crea la rama a partir de la fase 1 completada: `git fetch` y `git switch -c fase-2-design origin/fase-1-requirements`. No partas de `main`: ya tiene fusionadas todas las fases.
 2. En el spec de Kiro, pide crear el diseño a partir de los requisitos aprobados.
 3. Revisa con Kiro las decisiones de diseño y los riesgos, y simplifica lo que no haga falta para el nivel de la demo.
-4. Si una decisión cambia los requisitos o el steering, versiona ese cambio en la rama de su fase y llévalo a `main` con su propia PR.
-5. Comprueba que cada requisito aparece en la tabla de trazabilidad del diseño.
-6. Haz el commit: `docs(specs): add link-in-bio design`.
+4. Comprueba que cada requisito aparece en la tabla de trazabilidad del diseño.
+5. Haz el commit: `docs(specs): add link-in-bio design`.

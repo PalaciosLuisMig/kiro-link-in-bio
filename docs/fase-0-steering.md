@@ -71,7 +71,7 @@ Estas decisiones se tomaron durante la revisión del steering, pero pertenecen a
 - Número de stacks de CDK.
 
 ## Cómo reproducir esta fase
-1. Crea la rama: `git checkout -b fase-0-steering`.
+1. En un repositorio vacío (`git init`), crea la rama: `git switch -c fase-0-steering`. La fase 0 no tiene fase anterior.
 2. Crea los tres archivos en `.kiro/steering/` (`product.md`, `tech.md`, `structure.md`). Puedes pedírselo a Kiro a partir de la descripción de la demo.
 3. Revisa cada archivo con Kiro, uno a uno, y toma las decisiones de producto y tecnología.
 4. Haz una revisión cruzada de los tres archivos buscando contradicciones.
